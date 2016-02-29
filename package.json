@@ -1,0 +1,13 @@
+{
+  "scripts": {
+  	"babel": "babel backend-app --out-dir backend-app-build -w"
+  },
+  "devDependencies": {
+    "async": "^1.5.2",
+    "babel": "^6.5.2",
+    "cheerio": "^0.20.0",
+    "mongoose": "^4.4.5",
+    "request": "^2.69.0",
+    "underscore": "^1.8.3"
+  }
+}
