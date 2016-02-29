@@ -114,16 +114,4 @@ class KorrParser {
         }).exec((err) => cb());
     }
 }
-
-var korr = new KorrParser();
-// korr.fetchAndSaveMonths(2010, ['february'], () => {
-// 	mongoose.connection.close();
-// })
-//
-
-models.connect();
-
-korr.removeArticlesForMonth(2010, 1, (count) => {
-    console.log(count);
-    models.closeConnection();
-});
+export default KorrParser;

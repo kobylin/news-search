@@ -62,14 +62,4 @@ class ArticleTokenizer {
     }
 }
 
-var at = new ArticleTokenizer();
-
-models.connect();
-
-Article.find().exec((err, items) => {
-
-    at.tokenizeInWordsAndSave(items, (err, result) => {
-        console.log('END!: ', err, result);
-        models.closeConnection();
-    });
-});
+export default ArticleTokenizer;

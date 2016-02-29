@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
-var Word = mongoose.model('word', {
+export var Word = mongoose.model('word', {
 	word: String,
 	created: Date,
 	articleId: mongoose.Schema.Types.ObjectId
 });
 
-var Article = mongoose.model('article', {
+export var Article = mongoose.model('article', {
 	title: String,
 	text: String,
 	createdRaw: String,
@@ -14,8 +14,6 @@ var Article = mongoose.model('article', {
 	link: String
 });
 
-export var Article = Article;
-export var Word = Word;
 export function connect() {
     mongoose.connect('mongodb://localhost/news-search');
     console.log('Connected to db');
