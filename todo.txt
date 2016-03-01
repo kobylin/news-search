@@ -1,0 +1,3 @@
+- display article list
+- use single web server for app
+- bundle jsx into static file
