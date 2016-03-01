@@ -1,16 +1,27 @@
+var Article = React.createClass({
+  render:function() {
+    return (<li>{this.props.title}</li>);
+  }
+});
+
 module.exports = React.createClass({
     getInitialState: function() {
         return {
-            articles: []
+            articles: [
+                {title: 'vah'},
+                {title: 'vah'},
+                {title: 'vah'},
+                {title: 'vah'}
+            ]
         };
     },
 
     componentDidMount: function() {
-        this.serverRequest = $.get('/articles', function (result) {
-            this.setState({
-                articles: result.result
-            });
-        }.bind(this));
+        // this.serverRequest = $.get('/articles', function (result) {
+        //     this.setState({
+        //         articles: result.result
+        //     });
+        // }.bind(this));
     },
 
     componentWillUnmount: function() {
@@ -18,12 +29,10 @@ module.exports = React.createClass({
     },
 
     render: function() {
-        return (
-            <ul>
-                for(var idx in this.state.articles) {
-                    <li>this.state.articles[idx].title</li>
-                }
-            </ul>
-        );
+        let articles = [];
+        this.state.articles.forEach((art, idx) => {
+            articles.push(<Article title={art.title} key={idx}/>);
+        });
+        return (<ul>{articles}</ul>);
     }
 });
