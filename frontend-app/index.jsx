@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ArticleList from './ArticleList';
-import comments from './CommentBox';
+import NewsSearch from './NewsSearch';
+
+require("!style!css!less!./NewsSearch.less");
 
 var data = [
   {id: 1, author: "Pete Hunt", text: "This is one comment"},
@@ -9,6 +11,6 @@ var data = [
 ];
 
 ReactDOM.render(
-    <comments.CommentBox data={data}/>,
+    <NewsSearch/>,
     document.getElementById('content')
 );
