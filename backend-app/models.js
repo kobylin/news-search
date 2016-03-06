@@ -1,18 +1,32 @@
 import mongoose from 'mongoose';
 
-export var Word = mongoose.model('word', {
+function checkConnection (next) {
+	if(!mongoose.connection.readyState) {
+		next(new Error('mongo not connected'));
+	} else {
+		next();
+	}
+}
+
+var WordShema = new mongoose.Schema({
 	word: String,
 	created: Date,
 	articleId: mongoose.Schema.Types.ObjectId
 });
+WordShema.pre('save', checkConnection);
 
-export var Article = mongoose.model('article', {
+export var Word = mongoose.model('word', WordShema);
+
+var ArticleShema = new mongoose.Schema({
 	title: String,
 	text: String,
 	createdRaw: String,
 	created: Date,
 	link: String
 });
+ArticleShema.pre('save', checkConnection);
+
+export var Article = mongoose.model('article', ArticleShema);
 
 export function connect() {
     mongoose.connect('mongodb://localhost/news-search');

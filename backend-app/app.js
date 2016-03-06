@@ -4,7 +4,10 @@
 
 import ArticleTokenizer from './article-tokenizer';
 import KorrParser from './korr-parser';
+import {MonthNames} from './korr-parser';
 import * as models from './models';
+
+console.log(MonthNames)
 
 models.connect();
 
@@ -19,10 +22,8 @@ models.connect();
 //    });
 //});
 
-
-
 var korr = new KorrParser();
-korr.fetchAndSaveMonths(2016, ['february'], () => {
+korr.fetchAndSaveMonths(2015, MonthNames, () => {
     models.closeConnection();
 });
 

@@ -19,9 +19,6 @@ app.get('/articles',  (req, res) => {
     const orderBy = req.query.orderBy;
     const orderDir = req.query.orderDir;
 
-    console.log(new RegExp(q, 'i'), q);
-
-
     async.parallel({
         count: (cb) => {
             models.Article.count({
@@ -51,6 +48,18 @@ app.get('/articles',  (req, res) => {
             }, 
             items: result.items
         });
+    });
+});
+
+app.get('/articles_distribution', (req, res)=> {
+    models.Article.aggregate([
+        {$group: {
+            _id: {day: {$dayOfMonth: '$created'}, month: {$month: '$created'}}, 
+            count: {$sum:1} }
+        }, 
+        {$sort: {'_id.month': 1, '_id.day':1}}])
+    .exec((err, result) => {
+        res.json(result);
     });
 });
 

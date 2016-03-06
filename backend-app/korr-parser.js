@@ -8,20 +8,21 @@ import * as models from './models';
 import {parseKorrDateTime} from './nlp';
 import {justText} from './parser-helpers';
 
-const MonthNames = ["january", "february", "march", "april", "may", "june",
+export const MonthNames = ["january", "february", "march", "april", "may", "june",
     "july", "august", "september", "october", "november", "december"
 ];
 
 class KorrParser {
 
-    constructor() {
-        this.emptyPagesAttempt = 3;
-        this.goNextPageTimeout = 500;
+    constructor(options = {}) {
+        this.emptyPagesAttempt = options.emptyPagesAttempt || 3;
+        this.goNextPageTimeout = options.goNextPageTimeout || 500;
     }
 
     fetchAndSaveMonths(year, months, fetchAndSaveCb) {
         async.eachSeries(months, (month, monthCb) => {
             this.getArticlesForMonth(year, month, (articles) => {
+                // console.log('articles', articles)
                 async.each(articles, function (art, artCb) {
                     var article = new Article(art);
                     article.save(artCb);
@@ -33,7 +34,7 @@ class KorrParser {
 
         }, (err) => {
             if (err) {
-                console.log('ERROR', err);
+                console.log('ERROR: ', err);
             }
 
             console.log('All months finished', months.join(', '));
