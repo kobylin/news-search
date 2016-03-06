@@ -1,6 +1,6 @@
-import express from 'express'
-import * as models from './models'
-
+import express from 'express';
+import * as models from './models';
+import async from 'async';
 
 models.connect();
 
@@ -14,26 +14,42 @@ app.get('/', function (req, res) {
 
 app.get('/articles',  (req, res) => {
     const q = req.query.q || 0;
-    const offset = req.query.offset || 0;
-    const size = req.query.size || 10;
+    const offset = parseInt(req.query.offset) || 0;
+    const size = parseInt(req.query.size) || 10;
     const orderBy = req.query.orderBy;
     const orderDir = req.query.orderDir;
 
-    models.Article.find({
+    console.log(new RegExp(q, 'i'), q);
 
-    }).skip(offset).limit(size).exec((err, result)=>{
-        //if(err) {
-        //    return res.error(err);
-        //}
+
+    async.parallel({
+        count: (cb) => {
+            models.Article.count({
+                $or: [
+                    {title: new RegExp(q, 'i')},
+                    {text: new RegExp(q, 'i')},
+                ]
+            }).exec(cb);
+        },
+        items: (cb) => {
+            models.Article.find({
+                $or: [
+                    {title: new RegExp(q, 'i')},
+                    {text: new RegExp(q, 'i')},
+                ]
+            }).skip(offset).limit(size).exec(cb);
+        }
+    }, (err, result) => {
         res.json({
             meta: {
                 q: q,
                 offset: offset,
                 size: size,
                 orderBy: orderBy,
-                orderDir: orderDir
+                orderDir: orderDir,
+                count: result.count
             }, 
-            items: result
+            items: result.items
         });
     });
 });

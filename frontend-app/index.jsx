@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ArticleList from './ArticleList';
 import NewsSearch from './NewsSearch';
 
 require("!style!css!less!./NewsSearch.less");

@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "start": "npm run serve | npm run webpack_static | npm run babelb",
+    "start": "npm run wp | npm run babelb | npm run be",
     "babelb": "babel backend-app --out-dir backend-app-build -w",
-    "wp": "webpack --watch",
+    "be": "nodemon backend-app-build/web-app.js",
+    "wp": "webpack --watch --progress",
     "webpack": "webpack-dev-server --progress --colors --port 8090"
   },
   "devDependencies": {

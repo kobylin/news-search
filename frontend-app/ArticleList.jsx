@@ -1,38 +1,90 @@
-var Article = React.createClass({
-  render:function() {
-    return (<li>{this.props.title}</li>);
-  }
-});
+import _ from 'underscore';
+import Article from './Article';
 
-module.exports = React.createClass({
-    getInitialState: function() {
-        return {
-            articles: [
-                {title: 'vah'},
-                {title: 'vah'},
-                {title: 'vah'},
-                {title: 'vah'}
-            ]
-        };
-    },
+export default React.createClass({
+	getInitialState() {
+		return {
+			articles: [],
+			meta: {
 
-    componentDidMount: function() {
-        // this.serverRequest = $.get('/articles', function (result) {
-        //     this.setState({
-        //         articles: result.result
-        //     });
-        // }.bind(this));
-    },
+			}
+		}
+	},
 
-    componentWillUnmount: function() {
-        this.serverRequest.abort();
-    },
+	componentWillReceiveProps (nextProps) {
 
-    render: function() {
-        let articles = [];
-        this.state.articles.forEach((art, idx) => {
-            articles.push(<Article title={art.title} key={idx}/>);
-        });
-        return (<ul>{articles}</ul>);
-    }
+		this.searchArticles(nextProps.filter).then((result) => {
+			this.setState({
+				articles: result.items,
+				meta: result.meta
+			});
+		});
+
+	},
+
+	searchArticles(filter) {
+		return $.ajax({
+			method: 'GET',
+			url: 'http://localhost:3000/articles',
+			data: filter,
+			error: (result) => {
+				console.log(result);
+			}			
+		});
+	},
+
+	goNext () {
+
+		var nextPos = this.state.meta.offset + this.state.meta.size;
+		if(nextPos < this.state.meta.count) {
+			this.searchArticles(_.extend({},this.props.filter, {
+				offset: nextPos,
+			})).then((result) => {
+				this.setState({
+					articles: result.items,
+					meta: result.meta
+				});
+			});
+		}
+	},
+
+	goPrev () {
+		var prevPos = this.state.meta.offset - this.state.meta.size;
+		if(prevPos >= 0) {
+			this.searchArticles(_.extend({},this.props.filter, {
+				offset: prevPos,
+			})).then((result) => {
+				this.setState({
+					articles: result.items,
+					meta: result.meta
+				});
+			});
+		}
+	},
+
+	componentWillUpdate (nextProps, nextState) {
+		// console.log('nextProps', nextProps, 'nextState', nextState);
+	},
+	
+	render() {
+		var articles = _.map(this.state.articles, (art) => {
+			return (
+				<Article data={art} key={art._id}/>
+			)
+		});
+
+		return (
+			<div className="ArticleList">
+				<ul>
+					{articles}
+				</ul>
+				<div>
+					Total: {this.state.meta.count}, offset {this.state.meta.offset}
+				</div>
+				<a onClick={this.goPrev} href="#">Prev</a>
+				<br/>
+				<a onClick={this.goNext} href="#">Next</a>
+			</div>
+		)
+	}
 });
