@@ -1,3 +1,5 @@
-- display article list
-- use single web server for app
-- bundle jsx into static file
+- make distribution chart more accurate
+- show 2 charts
+- split into words
+- distribution chart for words
+- cache aggregated words

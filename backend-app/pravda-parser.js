@@ -16,13 +16,16 @@ import {
   justText
 }
 from './parser-helpers';
+import iconv from 'iconv';
 
+export const MonthNames = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 class PravdaParser {
 
   constructor(options = {}) {
     this.emptyPagesAttempt = options.emptyPagesAttempt || 3;
     this.goNextPageTimeout = options.goNextPageTimeout || 500;
+    this._conv = new iconv.Iconv('windows-1251', 'utf8');
   }
 
   fetchAndSaveMonths(year, months, fetchAndSaveCb) {
@@ -70,10 +73,14 @@ class PravdaParser {
 
       request({
         url: url,
+        encoding: null,
         headers: {
           Cookie: 'b=b; b=b; _ym_uid=1457515766598595745; _ym_isad=1; b=b; PRAVDA_COOKIE=75e84cc72acec051fcaac8720dd3b3af; _ga=GA1.3.1874425770.1457515765; _gat=1',
         }
-      }, function(err, resp, body) {
+      }, (err, resp, body) => {
+        body = new Buffer(body, 'binary');
+        body = self._conv.convert(body).toString();
+
         var $dom = cheerio.load(body, {
           decodeEntities: false
         });

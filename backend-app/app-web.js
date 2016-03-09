@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import * as models from './models';
 import async from 'async';
 import path from 'path';
+import _ from 'underscore';
 
 models.connect();
 
@@ -59,13 +60,14 @@ app.get('/articles', (req, res) => {
 app.get('/articles_distribution', (req, res) => {
     var _from = req.query.from;
     var to = req.query.to;
-    
+    var sourceName = req.query.sourceName;
+
     var query = [{
         $group: {
             _id: {
-                day: {
-                    $dayOfMonth: '$created'
-                },
+                // day: {
+                //     $dayOfMonth: '$created'
+                // },
                 month: {
                     $month: '$created'
                 },
@@ -95,10 +97,20 @@ app.get('/articles_distribution', (req, res) => {
         }
     }];
 
-    if(_from) {
-        var match = {
-            $match: {created: {$gt: new Date(parseInt(_from))}}
+    var match = {
+        $match: {}
+    };
+
+    if (_from) {
+        match.$match.created = {
+            $gt: new Date(parseInt(_from))
         };
+    }
+    if (sourceName) {
+        match.$match.sourceName = sourceName;
+    }
+
+    if (!_.isEmpty(match.$match)) {
         query.unshift(match);
     }
     models.Article.aggregate(query)
