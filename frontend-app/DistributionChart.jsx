@@ -18,13 +18,23 @@ export default React.createClass({
 
 	searchDistribution(filter) {
 		return $.ajax({
-			url: '/articles_distribution'
-		})
+			url: '/articles_distribution',
+			data: {
+				from: +new Date(2016, 0)
+			}
+		});
 	},
 
 	componentDidMount: function() {
     var el = ReactDOM.findDOMNode(this)
-    this.chart = new DistributionChart(el);
+    this.chart = new DistributionChartD3(el, {
+    	width: 800,
+    	height: 600
+    });
+
+    this.searchDistribution().then((result) => {
+	    this.chart.initChart(result);
+    });
   },
 
 	render() {
