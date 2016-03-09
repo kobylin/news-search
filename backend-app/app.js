@@ -4,6 +4,7 @@
 
 import ArticleTokenizer from './article-tokenizer';
 import KorrParser from './korr-parser';
+import PravdaParser from './pravda-parser';
 import {MonthNames} from './korr-parser';
 import * as models from './models';
 
@@ -22,12 +23,18 @@ models.connect();
 //    });
 //});
 
-var korr = new KorrParser();
-korr.fetchAndSaveMonths(2015, MonthNames, () => {
-    models.closeConnection();
-});
+// var korr = new KorrParser();
+// korr.fetchAndSaveMonths(2015, MonthNames, () => {
+//     models.closeConnection();
+// });
 
 //korr.removeArticlesForMonth(2010, 1, (count) => {
 //    console.log(count);
 //    models.closeConnection();
 //});
+//
+
+var parser = new PravdaParser();
+parser.getArticlesForMonth(2015, 1, function(articles) {
+	console.log(articles);
+});

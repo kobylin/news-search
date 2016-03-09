@@ -20,7 +20,7 @@ export default React.createClass({
 		return $.ajax({
 			url: '/articles_distribution',
 			data: {
-				from: +new Date(2016, 0)
+				from: +new Date(2015, 0)
 			}
 		});
 	},
