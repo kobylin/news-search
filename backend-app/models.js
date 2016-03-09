@@ -22,7 +22,8 @@ var ArticleShema = new mongoose.Schema({
 	text: String,
 	createdRaw: String,
 	created: Date,
-	link: String
+	link: String,
+	sourceName: String
 });
 ArticleShema.pre('save', checkConnection);
 

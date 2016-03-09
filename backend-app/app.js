@@ -34,7 +34,13 @@ models.connect();
 //});
 //
 
-var parser = new PravdaParser();
-parser.getArticlesForMonth(2015, 1, function(articles) {
+var parser = new PravdaParser({
+	goNextPageTimeout: 3000
+});
+parser.fetchAndSaveMonths(2015, [2,3,4,5,6,7,8,9,10,11,12], function(articles) {
 	console.log(articles);
 });
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}

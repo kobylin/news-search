@@ -17,10 +17,6 @@ import {
 }
 from './parser-helpers';
 
-var request1 = request.defaults({jar: true});
-var j = request.jar();
-var cookie = request.cookie('PRAVDA_COOKIE=75e84cc72acec051fcaac8720dd3b3af');
-// j.setCookie(cookie, 'www.pravda.com.ua');
 
 class PravdaParser {
 
@@ -48,7 +44,7 @@ class PravdaParser {
       }
 
       console.log('All months finished', months.join(', '));
-      fetchAndSaveCb();
+      fetchAndSaveCb(err);
     });
   }
 
@@ -72,22 +68,12 @@ class PravdaParser {
       var url = `http://www.pravda.com.ua/archives/date_${date}/`;
       console.log(url);
 
-
-      request1({
+      request({
         url: url,
-        jar: j,
-        // 'PRAVDA_COOKIE': '75e84cc72acec051fcaac8720dd3b3af',
         headers: {
-          'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36',
-          Cookie: 'b=b; b=b; _ym_uid=1457515766598595745; _ym_isad=1; b=b; _ga=GA1.3.1874425770.1457515765',
-          'Content-Type': 'text/plain; charset=utf-8',
-          'Accept': '*/*',
-          'Accept-Encoding': 'gzip, deflate, sdch',
-          'Accept-Language': 'en-US,en;q=0.8,ru;q=0.6',
-
+          Cookie: 'b=b; b=b; _ym_uid=1457515766598595745; _ym_isad=1; b=b; PRAVDA_COOKIE=75e84cc72acec051fcaac8720dd3b3af; _ga=GA1.3.1874425770.1457515765; _gat=1',
         }
       }, function(err, resp, body) {
-        console.log(body)
         var $dom = cheerio.load(body, {
           decodeEntities: false
         });
@@ -96,7 +82,7 @@ class PravdaParser {
         console.log(articles.length);
 
         articles.each(function(i, art) {
-          monthArticles.push(PravdaParser.getDataFromArticle($dom, art));
+          monthArticles.push(PravdaParser.getDataFromArticle($dom, art, currentDate));
         });
 
         setTimeout(function() {
@@ -117,13 +103,14 @@ class PravdaParser {
       text: justText($dom(art).find('.article__subtitle')).trim(),
       createdRaw: createdRaw,
       created: PravdaParser.parseDateTime(date, createdRaw),
-      link: $dom(art).find('.article__title a').attr('href')
+      link: $dom(art).find('.article__title a').attr('href'),
+      sourceName: 'pravda'
     };
   }
 
   static parseDateTime(knownDate, timeStr) {
     var date = new Date(+knownDate);
-    timeP = timeStr.split(':');
+    var timeP = timeStr.split(':');
     date.setHours(parseInt(timeP[0]));
     date.setMinutes(parseInt(timeP[1]));
     return date;

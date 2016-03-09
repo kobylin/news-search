@@ -93,7 +93,8 @@ class KorrParser {
             text: justText($dom(art).find('.article__text')).trim(),
             createdRaw: createdRaw,
             created: parseKorrDateTime(createdRaw),
-            link: $dom(art).find('.article__title a').attr('href')
+            link: $dom(art).find('.article__title a').attr('href'),
+            sourceName: 'korrespondent'
         };
     }
 

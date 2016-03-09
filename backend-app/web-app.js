@@ -1,4 +1,5 @@
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import * as models from './models';
 import async from 'async';
 import path from 'path';
@@ -8,6 +9,7 @@ models.connect();
 const app = express();
 app.use(express.static('frontend-app-build'));
 app.use(express.static('node_modules'));
+app.use(cookieParser())
 
 app.get('/', function(req, res) {
     res.sendFile(path.resolve(__dirname + '/../index.html'));
@@ -108,6 +110,10 @@ app.get('/articles_distribution', (req, res) => {
         });
 });
 
+app.get('/coock', (req, res) => {
+    res.send(req.cookies);
+
+});
 
 app.listen(3000, function() {
     console.log('Example app listening on port 3000!');
