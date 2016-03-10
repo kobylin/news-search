@@ -26,7 +26,7 @@ models.connect();
 //});
 
 var korr = new KorrParser();
-korr.fetchAndSaveMonths(2014, KorrMonthNames, () => {
+korr.fetchAndSaveMonths(2014, KorrMonthNames.slice(3), () => {
     models.closeConnection();
 });
 

@@ -2,11 +2,11 @@ import DistributionChartD3 from './charts/DistributionChartD3';
 import ReactDOM from 'react-dom';
 
 export default React.createClass({
-	getInitialState() {
-		return {
-			filter: {}
-		}
-	},
+	// getInitialState() {
+	// 	return {
+	// 		filter: {}
+	// 	}
+	// },
 
 	componentWillReceiveProps (props) {
 		console.log('DistributionChart.componentWillReceiveProps', props);
@@ -19,11 +19,7 @@ export default React.createClass({
 	searchDistribution(filter) {
 		return $.ajax({
 			url: '/articles_distribution',
-			data: {
-				from: +new Date(2014, 0),
-				// sourceName: 'pravda',
-				sourceName: 'korrespondent'
-			}
+			data: filter
 		});
 	},
 
@@ -34,7 +30,7 @@ export default React.createClass({
     	height: 600
     });
 
-    this.searchDistribution().then((result) => {
+    this.searchDistribution(this.props.filter).then((result) => {
 	    this.chart.initChart(result);
     });
   },

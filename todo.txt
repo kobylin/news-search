@@ -1,5 +1,6 @@
-- make distribution chart more accurate
 - show 2 charts
+	- parametrize charts
+- make distribution chart more accurate
 - split into words
 - distribution chart for words
 - cache aggregated words
