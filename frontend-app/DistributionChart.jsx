@@ -1,4 +1,5 @@
 import DistributionChartD3 from './charts/DistributionChartD3';
+import DistributionChartManySourcesD3 from './charts/DistributionChartManySourcesD3';
 import ReactDOM from 'react-dom';
 
 export default React.createClass({
@@ -25,7 +26,7 @@ export default React.createClass({
 
 	componentDidMount: function() {
     var el = ReactDOM.findDOMNode(this)
-    this.chart = new DistributionChartD3(el, {
+    this.chart = new DistributionChartManySourcesD3(el, {
     	width: 800,
     	height: 600
     });
