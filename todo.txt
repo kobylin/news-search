@@ -1,5 +1,5 @@
-- show 2 charts
-	- parametrize charts
+- Multily Distribution Chart
+	- make nice colors
 - make distribution chart more accurate
 - split into words
 - distribution chart for words
