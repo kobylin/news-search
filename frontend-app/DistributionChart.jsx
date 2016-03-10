@@ -1,5 +1,6 @@
-import DistributionChartD3 from './charts/DistributionChartD3';
+// import DistributionChartD3 from './charts/DistributionChartD3';
 import DistributionChartManySourcesD3 from './charts/DistributionChartManySourcesD3';
+
 import ReactDOM from 'react-dom';
 
 export default React.createClass({

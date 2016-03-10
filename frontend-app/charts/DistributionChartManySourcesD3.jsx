@@ -1,6 +1,5 @@
 import d3 from 'd3';
 import _ from 'underscore';
-require("!style!css!less!./DistributionChartD3.less");
 
 class DistributionChartManySourcesD3 {
 	getTemplate() {
@@ -77,8 +76,6 @@ class DistributionChartManySourcesD3 {
 
 		console.log(normalizedData);
 
-		return;
-
 
 		var timeRange = d3.extent(normalizedData, function(d) {
 			return d.date
@@ -130,71 +127,133 @@ class DistributionChartManySourcesD3 {
 		plot.select(".y.axis")
 			.call(yAxis);
 
-		var barBinded = plot.select('.bars-container').selectAll(".bar-group")
+		var barGroupBinded = plot.select('.bars-container')
+			.selectAll(".bar-group")
 			.data(normalizedData, function(d) {
 				var created = new Date(d.date);
 				return created.getFullYear() + '' + created.getMonth();
 			});
+
+		barGroupBinded.enter()
+			.append('g')
+			.attr('class', 'bar-group');
+
+		barGroupBinded
+			.attr("transform", function(d, i) {
+				return "translate(" + (x(d.date) - barWidth / 2) + ", 0)";
+			});
+
+		barGroupBinded
+			.on('mouseover', function(d) {
+				var tooltip = [];
+				_.each(d.sources, (s) => {
+					return tooltip.push(`${s.sourceName}:${s.count}`);
+				});
+				tooltip = tooltip.join(',');
+
+				barTooltip.style('visibility', 'visible');
+				barTooltip
+					.attr('text-anchor', 'center')
+					.attr("x", x(d.date))
+					.attr("y", y(d3.max(d.sources, (s) => {
+						return s.count;
+					})))
+					.attr("dx", '1em')
+					.attr("dy", '-2px')
+					.text(tooltip);
+			})
+			.on('mouseout', function(d) {
+				barTooltip.style('visibility', 'hidden');
+			});
+
+		var barBinded = barGroupBinded
+			.selectAll('.bar')
+			.data((d) => {
+				return d.sources
+			});
+
+		barBinded.enter()
+			.append('rect')
+			.attr('class', 'bar')
+			.style('fill-opacity', 0.5)
+			.style('stroke', 'black')
+			.attr('text', (d) => {
+				return d.count;
+			});
+
+		barBinded
+			.attr("y", function(d) {
+				return y(d.count)
+			})
+			.attr("width", function(d) {
+				return barWidth || 0;
+			})
+			.attr("height", function(d) {
+				return plotHeight - y(d.count);
+			});
+
+		return;
 
 		barBinded.exit().remove();
 		barBinded.enter().append("g")
 			.attr('class', 'bar-group')
 		// .append("rect") ?????;
 
-		plot.select('.bars-container').selectAll(".bar-group")
+		plot.select('.bars-container')
+			.selectAll(".bar-group")
 			.attr("transform", function(d, i) {
 				return "translate(" + (x(d.date) - barWidth / 2) + ", 0)";
 			});
 
-		plot.select('.bars-container').selectAll(".bar-group")
-			// .select("rect")
-			// ???????
-			.attr('class', 'count')
-			.attr("height", 0)
-			.on('mouseover', function(d) {
-					var tooltip = _.reduce(d.sources, (memo, s) => {
-						return `${memo}, ${s.sourceName}:${s.count}`;
-					}, '');
+		// plot.select('.bars-container').selectAll(".bar-group")
+		// .select("rect")
+		// ???????
+		// .attr('class', 'count')
+		// 	.attr("height", 0)
+		// 	.on('mouseover', function(d) {
+		// 			var tooltip = _.reduce(d.sources, (memo, s) => {
+		// 				return `${memo}, ${s.sourceName}:${s.count}`;
+		// 			}, '');
 
-					barTooltip.style('visibility', 'visible');
-					barTooltip
-						.attr('text-anchor', 'end')
-						.attr("x", x(d.date))
-						.attr("y", d3.max(d.sources, (s) => {
-								return s.count
-							})
-							.attr("dx", '1em')
-							.attr("dy", '-2px')
-							.text(tooltip);
-					})
-				.on('mouseout', function(d) {
-					barTooltip.style('visibility', 'hidden');
-				})
-				.on('click', function(d) {
-					if (scope.onBarClick)
-						scope.onBarClick({
-							event: d3.event,
-							d: d
-						});
-				})
-				.transition()
-				.attr("y", function(d) {
-					return y(d.count)
-				})
-				.attr("width", function(d) {
-					return barWidth || 0;
-				})
-				.attr("height", function(d) {
-					return plotHeight - y(d.count);
-				});
-
-		}
-
-		update(data) {
-
-		}
+		// 			barTooltip.style('visibility', 'visible');
+		// 			barTooltip
+		// 				.attr('text-anchor', 'end')
+		// 				.attr("x", x(d.date))
+		// 				.attr("y", d3.max(d.sources, (s) => {
+		// 						return s.count
+		// 					})
+		// 					.attr("dx", '1em')
+		// 					.attr("dy", '-2px')
+		// 					.text(tooltip);
+		// 			})
+		// 		.on('mouseout', function(d) {
+		// 			barTooltip.style('visibility', 'hidden');
+		// 		})
+		// 		.on('click', function(d) {
+		// 			if (scope.onBarClick)
+		// 				scope.onBarClick({
+		// 					event: d3.event,
+		// 					d: d
+		// 				});
+		// 		})
+		// 		.transition()
+		// 		.attr("y", function(d) {
+		// 			return y(d.count)
+		// 		})
+		// 		.attr("width", function(d) {
+		// 			return barWidth || 0;
+		// 		})
+		// 		.attr("height", function(d) {
+		// 			return plotHeight - y(d.count);
+		// 		});
 
 	}
 
-	export
-	default DistributionChartManySourcesD3;
+	update(data) {
+
+	}
+
+}
+
+export
+default DistributionChartManySourcesD3;
