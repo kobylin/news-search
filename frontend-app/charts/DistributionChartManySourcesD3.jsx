@@ -54,6 +54,7 @@ class DistributionChartManySourcesD3 {
 		}
 
 		var normalizedData = {};
+		var sourceNames = [];
 		_.each(wordsData, function(d) {
 			var dateKey = d.date.year + '.' + d.date.month;
 
@@ -67,7 +68,15 @@ class DistributionChartManySourcesD3 {
 				count: d.count,
 				sourceName: d.sourceName
 			});
+			if (sourceNames.indexOf(d.sourceName) === -1) {
+				sourceNames.push(d.sourceName);
+			}
 		});
+
+		var sourceColorScale = d3.scale.ordinal()
+			.domain(sourceNames)
+			.range(d3.scale.category10().range());
+
 
 		normalizedData = _.values(normalizedData);
 		normalizedData = _.sortBy(normalizedData, 'date');
@@ -166,13 +175,16 @@ class DistributionChartManySourcesD3 {
 		var barBinded = barGroupBinded
 			.selectAll('.bar')
 			.data((d) => {
-				return d.sources
+				return d.sources;
 			});
 
 		barBinded.enter()
 			.append('rect')
 			.attr('class', 'bar')
 			.style('fill-opacity', 0.5)
+			.style('fill', (d) => {
+				return sourceColorScale(d.sourceName);
+			})
 			.style('stroke', 'black')
 			.attr('text', (d) => {
 				return d.count;
@@ -191,16 +203,16 @@ class DistributionChartManySourcesD3 {
 
 		return;
 
-		barBinded.exit().remove();
-		barBinded.enter().append("g")
-			.attr('class', 'bar-group')
-		// .append("rect") ?????;
+		// barBinded.exit().remove();
+		// barBinded.enter().append("g")
+		// 	.attr('class', 'bar-group')
+		// // .append("rect") ?????;
 
-		plot.select('.bars-container')
-			.selectAll(".bar-group")
-			.attr("transform", function(d, i) {
-				return "translate(" + (x(d.date) - barWidth / 2) + ", 0)";
-			});
+		// plot.select('.bars-container')
+		// 	.selectAll(".bar-group")
+		// 	.attr("transform", function(d, i) {
+		// 		return "translate(" + (x(d.date) - barWidth / 2) + ", 0)";
+		// 	});
 
 		// plot.select('.bars-container').selectAll(".bar-group")
 		// .select("rect")
