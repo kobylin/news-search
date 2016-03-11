@@ -69,13 +69,10 @@ class DistributionChartManySourcesD3 {
 			});
 		});
 
-
-
 		normalizedData = _.values(normalizedData);
 		normalizedData = _.sortBy(normalizedData, 'date');
 
 		console.log(normalizedData);
-
 
 		var timeRange = d3.extent(normalizedData, function(d) {
 			return d.date

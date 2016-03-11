@@ -62,6 +62,7 @@ app.get('/articles_distribution', (req, res) => {
   const to = req.query.to;
   const sourceName = req.query.sourceName;
   const groupBySource = req.query.groupBySource === '1';
+  const q = req.query.q;
 
   var group = {
     _id: {
@@ -117,12 +118,19 @@ app.get('/articles_distribution', (req, res) => {
     match.sourceName = sourceName;
   }
 
+  if (q) {
+    match.title = new RegExp(q, 'i');
+    match.text = new RegExp(q, 'i');
+  }
+
   if (!_.isEmpty(match)) {
     query.unshift({
       $match: match
     });
   }
 
+
+  console.log('-----------------------------', q);
   console.log(JSON.stringify(query, null, 2));
 
   models.Article.aggregate(query)

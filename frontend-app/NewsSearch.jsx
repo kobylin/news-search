@@ -6,24 +6,29 @@ import ArticleList from './ArticleList';
 export default React.createClass({
 	getInitialState() {
 		return {
-			filter: {}
+			filter: {
+				from: +new Date(2014, 0),
+				groupBySource: 1
+				// sourceName: 'korrespondent'
+			}
 		};
 	},
 
-	doSearch (filter) {
-		console.log('filter', filter);
-		this.setState({
-			filter: filter
-		});
-		
-	},
-
-	render () {
+	handleFilterChanged (filter) {
 		var chart1filter = {
 				from: +new Date(2014, 0),
 				groupBySource: 1
 				// sourceName: 'korrespondent'
 		};
+
+		console.log('filter', filter);
+		this.setState({
+			filter: _.extend({}, filter, chart1filter)
+		});
+	},
+
+	render () {
+
 		var chart2filter = {
 				from: +new Date(2014, 0),
 				sourceName: 'pravda',
@@ -31,8 +36,8 @@ export default React.createClass({
 
 		return(
 			<div className="NewsSearch">
-				<NewsFilters onFilterChanged={this.doSearch}/>
-				<DistributionChart filter={chart1filter}/>
+				<NewsFilters onFilterChanged={this.handleFilterChanged}/>
+				<DistributionChart filter={this.state.filter}/>
 				<ArticleList filter={this.state.filter}/>
 			</div>
 		)
