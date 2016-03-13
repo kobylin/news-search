@@ -10,7 +10,7 @@ export default React.createClass({
 	},
 
 	componentWillMount () {
-		this.onFilterChangedDeb = _.debounce(this.props.onFilterChanged, 1000);
+		this.onFilterChangedDeb = _.debounce(this.props.onFilterChanged, 500);
 	},
 
 	handleQ(event) {

@@ -1,5 +1,6 @@
 import d3 from 'd3';
 import _ from 'underscore';
+require("!style!css!less!./DistributionChartD3.less");
 
 class DistributionChartManySourcesD3 {
 	getTemplate() {
@@ -11,6 +12,8 @@ class DistributionChartManySourcesD3 {
 			      <g class="y axis"></g>
 			      <g class="bars-container"></g>
 			      <text class="bar-tooltip"></text>
+			   </g>
+			   <g class="legend">
 			   </g>
 			</svg>
 		`;
@@ -28,8 +31,8 @@ class DistributionChartManySourcesD3 {
 		var width = this.width,
 			height = this.height,
 			margin = {
-				top: 20,
-				right: 20,
+				top: 60,
+				right: 120,
 				bottom: 60,
 				left: 50
 			},
@@ -47,6 +50,9 @@ class DistributionChartManySourcesD3 {
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 		var barTooltip = plot.select('.bar-tooltip');
+
+		var legend = rootElement.select('.legend');
+		legend.attr('transform', `translate(${width - 120}, 40)`)
 
 		if (wordsData.length == 0) {
 			plot.selectAll(".bar").remove();
@@ -73,10 +79,36 @@ class DistributionChartManySourcesD3 {
 			}
 		});
 
-		var sourceColorScale = d3.scale.ordinal()
-			.domain(sourceNames)
-			.range(d3.scale.category10().range());
+		// var colorRange = d3.scale.category10().range();
+		// var darkerColorRange = colorRange.map(function(c) {return d3.rgb(c).darker(2).toString()} );
 
+		// var sourceColorScale = d3.scale.ordinal()
+		// 	.domain(sourceNames)
+		// 	.range();
+
+		// var darkerColorScale = 
+
+		var legendItemBinded = legend.selectAll('.legend-item')
+			.data(sourceNames);
+
+		var legendItemNew = legendItemBinded.enter()
+			.append('g')
+			.attr('class', 'legend-item')
+			.attr('transform', (d) => {
+				return `translate(0, ${sourceNames.indexOf(d) * 20})`
+			});
+		legendItemNew.append('rect')
+			.attr('width', 10)
+			.attr('height', 10)
+			.attr('class', (d) => {
+				return 'source' + sourceNames.indexOf(d);
+			});
+		legendItemNew.append('text')
+			.attr('dx', 15)
+			.attr('dy', 10)
+			.text(function(d) {
+				return d;
+			});
 
 		normalizedData = _.values(normalizedData);
 		normalizedData = _.sortBy(normalizedData, 'date');
@@ -84,11 +116,11 @@ class DistributionChartManySourcesD3 {
 		console.log(normalizedData);
 
 		var timeRange = d3.extent(normalizedData, function(d) {
-			return d.date
+			return d.date;
 		});
 		var mothsInRange = (timeRange[1] - timeRange[0]) / monthInMsec;
 		var yearsInRange = Math.ceil(mothsInRange / 12) + 1;
-		var barWidth = Math.round(width / (mothsInRange + 4 /*two month that we added at the bottom*/ )) - 1;
+		var barGroupWidth = Math.round(width / (mothsInRange + 4 /*two month that we added at the bottom*/ )) - 1;
 		var axisTimeRange = [+timeRange[0] - monthInMsec, +timeRange[1] + monthInMsec];
 		var x = d3.time.scale()
 			.domain(axisTimeRange)
@@ -97,7 +129,7 @@ class DistributionChartManySourcesD3 {
 		var y = d3.scale.linear()
 			.domain([0, d3.max(normalizedData, function(w) {
 				var localMax = d3.max(w.sources, (s) => {
-					return s.count
+					return s.count;
 				});
 				return localMax;
 			})])
@@ -119,8 +151,6 @@ class DistributionChartManySourcesD3 {
 		var yAxis = d3.svg.axis()
 			.scale(y)
 			.orient("left");
-		// .ticks(10)
-		// .tickFormat(d3.time.format("%m.%y"));
 
 		plot.select(".x.axis.axis-month")
 			.attr("transform", "translate(0," + (plotHeight) + ")")
@@ -146,116 +176,84 @@ class DistributionChartManySourcesD3 {
 
 		barGroupBinded
 			.attr("transform", function(d, i) {
-				return "translate(" + (x(d.date) - barWidth / 2) + ", 0)";
+				return "translate(" + (x(d.date) - barGroupWidth / 2) + ", 0)";
 			});
 
 		barGroupBinded
 			.on('mouseover', function(d) {
+				d3.select(this).classed('selected', true);
 				var tooltip = [];
 				_.each(d.sources, (s) => {
-					return tooltip.push(`${s.sourceName}:${s.count}`);
+					return tooltip.push(`${s.sourceName.substring(0,1)}:${s.count}`);
 				});
-				tooltip = tooltip.join(',');
+				tooltip = tooltip.join('\n');
+
+				var tooltipX = x(d.date) - barGroupWidth + barWidth;
+				var tooltipY = y(d3.max(d.sources, (s) => {
+					return s.count;
+				}));
 
 				barTooltip.style('visibility', 'visible');
 				barTooltip
 					.attr('text-anchor', 'center')
-					.attr("x", x(d.date))
-					.attr("y", y(d3.max(d.sources, (s) => {
-						return s.count;
-					})))
-					.attr("dx", '1em')
-					.attr("dy", '-2px')
-					.text(tooltip);
+					.attr('transform', `translate(${tooltipX}, ${tooltipY - sourceNames.length * 20})`)
+
+				var sourceValueBinded = barTooltip.selectAll('.source-value')
+					.data(d.sources, d => d.sourceName);
+				sourceValueBinded.enter()
+					.append('tspan')
+					.attr('class', 'source-value');
+
+				sourceValueBinded
+					.attr('class', function(d) {
+						return d3.select(this).attr('class') + ' source' + sourceNames.indexOf(d.sourceName)
+					})
+					.attr('x', 0)
+					.attr('y', (d) => {
+						return `${sourceNames.indexOf(d.sourceName)*1.2}em`;
+					})
+					.text(d => d.count);
 			})
 			.on('mouseout', function(d) {
 				barTooltip.style('visibility', 'hidden');
+				d3.select(this).classed('selected', false);
 			});
 
 		var barBinded = barGroupBinded
 			.selectAll('.bar')
 			.data((d) => {
 				return d.sources;
+			}, (dd) => {
+				return dd.sourceName;
 			});
 
 		barBinded.enter()
 			.append('rect')
 			.attr('class', 'bar')
-			.style('fill-opacity', 0.5)
-			.style('fill', (d) => {
-				return sourceColorScale(d.sourceName);
-			})
+		// .style('fill-opacity', 0.5)
+		.attr('class', function(d) {
+			return d3.select(this).attr('class') + ' source' + sourceNames.indexOf(d.sourceName)
+		})
 			.style('stroke', 'black')
 			.attr('text', (d) => {
 				return d.count;
 			});
 
+		var barWidth = barGroupWidth / (sourceNames.length + 1);
+
 		barBinded
 			.attr("y", function(d) {
 				return y(d.count)
 			})
+			.attr('x', function(d) {
+				return sourceNames.indexOf(d.sourceName) * barWidth;
+			})
 			.attr("width", function(d) {
-				return barWidth || 0;
+				return barWidth;
 			})
 			.attr("height", function(d) {
 				return plotHeight - y(d.count);
 			});
-
-		return;
-
-		// barBinded.exit().remove();
-		// barBinded.enter().append("g")
-		// 	.attr('class', 'bar-group')
-		// // .append("rect") ?????;
-
-		// plot.select('.bars-container')
-		// 	.selectAll(".bar-group")
-		// 	.attr("transform", function(d, i) {
-		// 		return "translate(" + (x(d.date) - barWidth / 2) + ", 0)";
-		// 	});
-
-		// plot.select('.bars-container').selectAll(".bar-group")
-		// .select("rect")
-		// ???????
-		// .attr('class', 'count')
-		// 	.attr("height", 0)
-		// 	.on('mouseover', function(d) {
-		// 			var tooltip = _.reduce(d.sources, (memo, s) => {
-		// 				return `${memo}, ${s.sourceName}:${s.count}`;
-		// 			}, '');
-
-		// 			barTooltip.style('visibility', 'visible');
-		// 			barTooltip
-		// 				.attr('text-anchor', 'end')
-		// 				.attr("x", x(d.date))
-		// 				.attr("y", d3.max(d.sources, (s) => {
-		// 						return s.count
-		// 					})
-		// 					.attr("dx", '1em')
-		// 					.attr("dy", '-2px')
-		// 					.text(tooltip);
-		// 			})
-		// 		.on('mouseout', function(d) {
-		// 			barTooltip.style('visibility', 'hidden');
-		// 		})
-		// 		.on('click', function(d) {
-		// 			if (scope.onBarClick)
-		// 				scope.onBarClick({
-		// 					event: d3.event,
-		// 					d: d
-		// 				});
-		// 		})
-		// 		.transition()
-		// 		.attr("y", function(d) {
-		// 			return y(d.count)
-		// 		})
-		// 		.attr("width", function(d) {
-		// 			return barWidth || 0;
-		// 		})
-		// 		.attr("height", function(d) {
-		// 			return plotHeight - y(d.count);
-		// 		});
-
 	}
 
 	update(data) {
