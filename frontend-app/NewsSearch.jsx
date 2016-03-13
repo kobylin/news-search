@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import NewsFilters from './NewsFilters';
 import DistributionChart from './DistributionChart';
+import WordCloud from './WordCloud';
 import ArticleList from './ArticleList';
 
 export default React.createClass({
@@ -34,11 +35,13 @@ export default React.createClass({
 				sourceName: 'pravda',
 		};
 
+				// <DistributionChart filter={this.state.filter}/>
+
 		return(
 			<div className="NewsSearch">
 				<NewsFilters onFilterChanged={this.handleFilterChanged}/>
-				<DistributionChart filter={this.state.filter}/>
 				<ArticleList filter={this.state.filter}/>
+				<WordCloud />
 			</div>
 		)
 	}

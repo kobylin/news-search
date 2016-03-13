@@ -16,12 +16,13 @@ class ArticleTokenizer {
         let counterArticles = 0;
 
         async.eachSeries(articles, function (art, articlesCb) {
-            const tokens = tokenize(art.text);
+            const tokens = _.uniq(tokenize(art.text));
             async.each(tokens, (tok, saveCb) => {
                 new Word({
                     word: tok,
                     created: art.created,
-                    articleId: art._id
+                    articleId: art._id,
+                    sourceName: art.sourceName
                 }).save(saveCb);
             }, (err) => {
                 counterArticles++;

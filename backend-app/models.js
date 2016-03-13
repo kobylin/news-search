@@ -11,7 +11,8 @@ function checkConnection (next) {
 var WordShema = new mongoose.Schema({
 	word: String,
 	created: Date,
-	articleId: mongoose.Schema.Types.ObjectId
+	articleId: mongoose.Schema.Types.ObjectId,
+	sourceName: String
 });
 WordShema.pre('save', checkConnection);
 
