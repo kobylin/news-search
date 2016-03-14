@@ -35,7 +35,9 @@ default React.createClass({
 				height: 600
 			});
 
-			this.searchDistribution().then((result) => {
+			this.searchDistribution({
+				nostopwords: 1
+			}).then((result) => {
 				this.chart.initChart(result);
 			});
 		},

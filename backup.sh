@@ -1,0 +1,1 @@
+mongodump --db news-search --out /home/andrew_k/Dropbox/Backup/news-search/
