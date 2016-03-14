@@ -7,13 +7,14 @@ export default React.createClass({
 			articles: [],
 			meta: {
 
-			}
+			},
+			url: ''
 		}
 	},
 
 	componentWillReceiveProps (nextProps) {
 
-		this.searchArticles(nextProps.filter).then((result) => {
+		this.searchArticles(nextProps.url, nextProps.filter).then((result) => {
 			this.setState({
 				articles: result.items,
 				meta: result.meta
@@ -22,10 +23,10 @@ export default React.createClass({
 
 	},
 
-	searchArticles(filter) {
+	searchArticles(url, filter) {
 		return $.ajax({
 			method: 'GET',
-			url: 'http://localhost:3000/articles',
+			url: url,
 			data: filter,
 			error: (result) => {
 				console.log(result);

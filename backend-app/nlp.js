@@ -3,7 +3,7 @@ const ruMonthNames = ['января', 'февраля', 'марта', 'апре�
 ];
 
 export function tokenize(text) {
-	var clean = text.replace(/[^a-zа-яё0-9]/gi, ' ').replace(/[\s\n]+/g, ' ').trim();
+	var clean = text.replace(/[^a-zа-яё0-9їіъґ]/gi, ' ').replace(/[\s\n]+/g, ' ').trim();
 	return clean.split(' ').map(function(s) {
 		return s.toLowerCase();
 	});

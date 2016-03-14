@@ -32,7 +32,8 @@ default React.createClass({
 
 			this.chart = new WordCloudD3(el, {
 				width: 800,
-				height: 600
+				height: 600,
+				onWordClick: this.props.onWordClick
 			});
 
 			this.searchDistribution({

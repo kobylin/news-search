@@ -47,7 +47,11 @@ function words_distribution(req, res) {
     }
   }];
 
-  var match = {};
+  var match = {
+    word: {
+      $not: /\d+/
+    }
+  };
 
   if (_from) {
     match.created = {
@@ -56,17 +60,12 @@ function words_distribution(req, res) {
   }
 
   if (sourceName) {
-    match.sourceName = source
-    Name;
+    match.sourceName = sourceName;
   }
 
-  if (q) {
-    match.$or = [{
-      title: new RegExp(q, 'i')
-    }, {
-      text: new RegExp(q, 'i')
-    }];
-  }
+  // if (q) {
+  //   match.word = q;
+  // }
 
   if (!_.isEmpty(match)) {
     query.unshift({
@@ -84,8 +83,21 @@ function words_distribution(req, res) {
     });
   }
 
-  // console.log('-------------query----------------', q);
-  // console.log(JSON.stringify(query, null, 2));
+  console.log('-------------query----------------', q);
+  console.log(JSON.stringify(query, null, 2));
+
+  models.Word.aggregate(query)
+    .exec((err, result) => {
+      if (err) {
+        return res.send(err);
+      }
+
+      const resultChunk = result.slice(0, 200);
+
+      res.json(resultChunk);
+    });
+
+  return;
 
   const cacheKey = JSON.stringify(query);
 
@@ -116,7 +128,7 @@ function words_distribution(req, res) {
               if (err) {
                 console.log('Cache error', err);
               }
-              console.log('cache saved');
+              console.log('Cache saved');
             });
 
             res.json(resultChunk);

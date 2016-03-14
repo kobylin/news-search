@@ -11,7 +11,8 @@ export default React.createClass({
 				from: +new Date(2014, 0),
 				groupBySource: 1
 				// sourceName: 'korrespondent'
-			}
+			},
+			url: ''
 		};
 	},
 
@@ -29,6 +30,15 @@ export default React.createClass({
 		});
 	},
 
+	handleWordCloudClick (data) {
+		this.setState({
+			url: '/words_distribution/articles',
+			filter: {
+				q: data.word
+			}
+		});
+	},
+
 	render () {
 
 		var chart2filter = {
@@ -42,8 +52,8 @@ export default React.createClass({
 		return(
 			<div className="NewsSearch">
 				<NewsFilters onFilterChanged={this.handleFilterChanged}/>
-				<ArticleList filter={this.state.filter}/>
-				<WordCloud />
+				<WordCloud onWordClick={this.handleWordCloudClick}/>
+				<ArticleList filter={this.state.filter} url={this.state.url}/>
 			</div>
 		)
 	}

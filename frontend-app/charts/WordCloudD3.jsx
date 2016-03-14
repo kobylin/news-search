@@ -76,8 +76,8 @@ class WordCloudD3 {
 				})
 				.on('click', (d) => {
 					console.log(d.origin);
-					if(this.onWordClick) {
-						this.onWordClick(d.origin);
+					if(self.onWordClick) {
+						self.onWordClick(d.origin);
 					}
 				});
 		}
