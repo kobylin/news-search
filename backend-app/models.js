@@ -30,6 +30,13 @@ ArticleShema.pre('save', checkConnection);
 
 export var Article = mongoose.model('article', ArticleShema);
 
+var CacheSchema = new mongoose.Schema({
+	key: String,
+	value: String,
+});
+
+export var Cache = mongoose.model('cache', CacheSchema);
+
 export function connect() {
     mongoose.connect('mongodb://localhost/news-search');
     console.log('Connected to db');

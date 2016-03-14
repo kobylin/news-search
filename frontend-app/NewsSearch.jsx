@@ -43,6 +43,7 @@ export default React.createClass({
 			<div className="NewsSearch">
 				<NewsFilters onFilterChanged={this.handleFilterChanged}/>
 				<ArticleList filter={this.state.filter}/>
+				<WordCloud />
 			</div>
 		)
 	}

@@ -1,3 +1,5 @@
+- cache aggregated words
+- sometimes word cloud not shows some words
 - make flexible article search
 	- search by word, not text matching
 	- search by date range 
@@ -6,4 +8,3 @@
 	- stem words
 - make distribution chart more accurate
 - distribution chart for words
-- cache aggregated words

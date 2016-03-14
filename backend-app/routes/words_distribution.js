@@ -12,6 +12,7 @@ const allStopWords = ruStopWords.concat(uaStopWords);
 
 export
 default
+
 function words_distribution(req, res) {
   const _from = req.query.from;
   const to = req.query.to;
@@ -84,14 +85,45 @@ function words_distribution(req, res) {
     });
   }
 
-  console.log('-----------------------------', q);
-  console.log(JSON.stringify(query, null, 2));
+  // console.log('-------------query----------------', q);
+  // console.log(JSON.stringify(query, null, 2));
 
-  models.Word.aggregate(query)
+  const cacheKey = JSON.stringify(query);
+
+  models.Cache
+    .findOne({
+      key: cacheKey
+    })
     .exec((err, result) => {
       if (err) {
         return res.send(err);
       }
-      res.json(result.slice(0, 200));
+      if (result) {
+        console.log('Get value from cache');
+        res.json(JSON.parse(result.value));
+      } else {
+        models.Word.aggregate(query)
+          .exec((err, result) => {
+            if (err) {
+              return res.send(err);
+            }
+
+            const resultChunk = result.slice(0, 200);
+
+            new models.Cache({
+              key: cacheKey,
+              value: JSON.stringify(resultChunk)
+            }).save((err) => {
+              if(err) {
+                console.log('Cache error', err);
+              }
+              console.log('cache saved');
+            });
+
+            res.json(resultChunk);
+          });
+      }
     });
+
+
 }
