@@ -1,3 +1,6 @@
+- make flexible article search
+	- search by word, not text matching
+	- search by date range 
 - split into words
 	- bad splitting, a lot of unknown chunks
 	- stem words

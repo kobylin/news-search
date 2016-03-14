@@ -18,7 +18,8 @@ export default React.createClass({
 	handleFilterChanged (filter) {
 		var chart1filter = {
 				from: +new Date(2014, 0),
-				groupBySource: 1
+				groupBySource: 1,
+				wholeWord: 1
 				// sourceName: 'korrespondent'
 		};
 
@@ -36,12 +37,12 @@ export default React.createClass({
 		};
 
 				// <DistributionChart filter={this.state.filter}/>
+				// <WordCloud />
 
 		return(
 			<div className="NewsSearch">
 				<NewsFilters onFilterChanged={this.handleFilterChanged}/>
 				<ArticleList filter={this.state.filter}/>
-				<WordCloud />
 			</div>
 		)
 	}

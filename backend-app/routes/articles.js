@@ -9,26 +9,36 @@ export default function articles (req, res) {
   const size = parseInt(req.query.size) || 10;
   const orderBy = req.query.orderBy || 'created';
   const orderDir = req.query.orderDir;
+  const wholeWord = req.query.wholeWord === '1';
 
-  var sortQuery = {};
+  let sortQuery = {};
   sortQuery[orderBy] = 1;
+
+  let qRegExp;
+  if(wholeWord) {
+    qRegExp = new RegExp(`([^wа-яА-Яїі]+|^)(${q})([^wа-яА-Яїі]+|$)`, 'i');
+  } else {
+    qRegExp = new RegExp(q, 'i');
+  }
+
+  console.log(qRegExp);
 
   async.parallel({
     count: (cb) => {
       models.Article.count({
         $or: [{
-          title: new RegExp(q, 'i')
+          title: qRegExp
         }, {
-          text: new RegExp(q, 'i')
+          text: qRegExp
         }, ]
       }).exec(cb);
     },
     items: (cb) => {
       models.Article.find({
         $or: [{
-          title: new RegExp(q, 'i')
+          title: qRegExp
         }, {
-          text: new RegExp(q, 'i')
+          text: qRegExp
         }, ]
       }).sort(sortQuery).skip(offset).limit(size).exec(cb);
     }
