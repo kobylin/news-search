@@ -34,7 +34,6 @@ export default React.createClass({
 	},
 
 	goNext () {
-
 		var nextPos = this.state.meta.offset + this.state.meta.size;
 		if(nextPos < this.state.meta.count) {
 			this.searchArticles(_.extend({},this.props.filter, {

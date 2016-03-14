@@ -7,7 +7,7 @@ import _ from 'underscore';
 
 import articlesRoute from './routes/articles';
 import articlesDistributionRoute from './routes/articles_distribution';
-import wordsDistributionRoute from './routes/words_distribution';
+import * as wordsDistributionRoute from './routes/words_distribution';
 
 
 console.log(articlesRoute);
@@ -26,7 +26,8 @@ app.get('/', function(req, res) {
 app.get('/articles', articlesRoute);
 
 app.get('/articles_distribution', articlesDistributionRoute);
-app.get('/words_distribution', wordsDistributionRoute);
+app.get('/words_distribution', wordsDistributionRoute.words_distribution);
+app.get('/words_distribution/articles', wordsDistributionRoute.words_distribution_articles);
 
 app.get('/coock', (req, res) => {
   res.send(req.cookies);

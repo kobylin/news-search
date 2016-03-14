@@ -5,17 +5,6 @@ import _ from 'underscore';
 class WordCloudD3 {
 	getTemplate() {
 		return `
-			<svg class="distribution-chart">
-			   <g class="plot">
-			      <g class="x axis axis-month"></g>
-			      <g class="x axis axis-year"></g>
-			      <g class="y axis"></g>
-			      <g class="bars-container"></g>
-			      <text class="bar-tooltip"></text>
-			   </g>
-			   <g class="legend">
-			   </g>
-			</svg>
 		`;
 	}
 
@@ -23,6 +12,7 @@ class WordCloudD3 {
 		this.element = element;
 		this.width = options.width;
 		this.height = options.height;
+		this.onWordClick = options.onWordClick;
 	}
 
 	initChart(wordsData) {
@@ -38,7 +28,8 @@ class WordCloudD3 {
 		var normalizedData = _.map(wordsData, (w) => {
 			return {
 				text: w.word,
-				size: sizeF(w.count)
+				size: sizeF(w.count),
+				origin: w
 			};
 		});
 
@@ -82,6 +73,12 @@ class WordCloudD3 {
 				})
 				.text(function(d) {
 					return d.text;
+				})
+				.on('click', (d) => {
+					console.log(d.origin);
+					if(this.onWordClick) {
+						this.onWordClick(d.origin);
+					}
 				});
 		}
 	}

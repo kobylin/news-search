@@ -11,7 +11,6 @@ const uaStopWords = fs.readFileSync(__dirname + '/../data/ukranian').toString().
 const allStopWords = ruStopWords.concat(uaStopWords);
 
 export
-default
 
 function words_distribution(req, res) {
   const _from = req.query.from;
@@ -114,7 +113,7 @@ function words_distribution(req, res) {
               key: cacheKey,
               value: JSON.stringify(resultChunk)
             }).save((err) => {
-              if(err) {
+              if (err) {
                 console.log('Cache error', err);
               }
               console.log('cache saved');
@@ -124,6 +123,69 @@ function words_distribution(req, res) {
           });
       }
     });
+}
 
+export
 
+function words_distribution_articles(req, res) {
+  const q = req.query.q;
+  if (!q) {
+    return res.send([]);
+  }
+
+  const offset = parseInt(req.query.offset) || 0;
+  const size = parseInt(req.query.size) || 20;
+  const orderBy = req.query.orderBy || 'created';
+  const orderDir = req.query.orderDir;
+
+  let sortQuery = {};
+  sortQuery[orderBy] = 1;
+
+  async.parallel({
+    count: (cb) => {
+      models.Word.count({
+        word: q
+      }).exec(cb);
+    },
+    items: (cb) => {
+      models.Word.find({
+        word: q
+      }).sort(sortQuery).skip(offset).limit(size).exec(cb);
+    }
+  }, (err, result) => {
+
+    models.Article.find({
+      _id: {
+        $in: result.items.map(it => it.articleId)
+      }
+    }).exec((err, articles) => {
+      // return res.json(articles.concat(result.items));
+      if(err) {
+        return res.send(err);
+      }
+      // var newItems = [];
+      // _.each(result.items, (it) => {
+      //   var newIt = {
+      //     word: it.word
+      //   }; //_.extend({}, it);
+      //   newIt.article = _.find(articles, (art) => {
+      //     return art._id.toString() == it.articleId;
+      //   });
+      //   newItems.push(newIt);
+      // });
+
+      res.json({
+        meta: {
+          q: q,
+          offset: offset,
+          size: size,
+          orderBy: orderBy,
+          orderDir: orderDir,
+          count: result.count
+        },
+        items: articles
+      });
+    });
+
+  });
 }
