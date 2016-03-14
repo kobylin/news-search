@@ -1,6 +1,6 @@
-- Multily Distribution Chart
-	- make nice colors
-- make distribution chart more accurate
 - split into words
+	- bad splitting, a lot of unknown chunks
+	- stem words
+- make distribution chart more accurate
 - distribution chart for words
 - cache aggregated words
