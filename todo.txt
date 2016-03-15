@@ -1,4 +1,6 @@
-- cache aggregated words
+- store and handle filter hierarcy
+- use Route params normally
+- handle ua apostrof
 - sometimes word cloud not shows some words
 - make flexible article search
 	- search by word, not text matching

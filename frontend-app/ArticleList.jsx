@@ -13,7 +13,6 @@ export default React.createClass({
 	},
 
 	componentWillReceiveProps (nextProps) {
-
 		this.searchArticles(nextProps.url, nextProps.filter).then((result) => {
 			this.setState({
 				articles: result.items,
@@ -63,7 +62,7 @@ export default React.createClass({
 	},
 
 	componentWillUpdate (nextProps, nextState) {
-		// console.log('nextProps', nextProps, 'nextState', nextState);
+		console.log('nextProps', nextProps, 'nextState', nextState);
 	},
 	
 	render() {

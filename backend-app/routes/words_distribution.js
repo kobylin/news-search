@@ -3,11 +3,13 @@ import path from 'path';
 import _ from 'underscore';
 import * as models from '../models';
 import fs from 'fs';
+import ruStopWords from '../data/russian';
+import uaStopWords from '../data/ukranian';
 
 console.log()
 
-const ruStopWords = fs.readFileSync(__dirname + '/../data/russian').toString().split('\n');
-const uaStopWords = fs.readFileSync(__dirname + '/../data/ukranian').toString().split('\n');
+// const ruStopWords = fs.readFileSync(__dirname + '/../data/russian').toString().split('\n');
+// const uaStopWords = fs.readFileSync(__dirname + '/../data/ukranian').toString().split('\n');
 const allStopWords = ruStopWords.concat(uaStopWords);
 
 export

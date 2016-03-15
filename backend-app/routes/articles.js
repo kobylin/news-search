@@ -16,7 +16,7 @@ export default function articles (req, res) {
 
   let qRegExp;
   if(wholeWord) {
-    qRegExp = new RegExp(`([^wа-яА-Яїі]+|^)(${q})([^wа-яА-Яїі]+|$)`, 'i');
+    qRegExp = new RegExp(`([^wа-яА-Яїіє]+|^)(${q})([^wа-яА-Яїіє]+|$)`, 'i');
   } else {
     qRegExp = new RegExp(q, 'i');
   }
