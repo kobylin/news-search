@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  var tomita_command = '/home/andrew_k/soft/tomita-linux64 config/config.proto';
+  var tomita_command = './tomita-linux64 config/config.proto';
 
   grunt.initConfig({
     watch: {

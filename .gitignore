@@ -4,4 +4,4 @@ backend-app-build
 frontend-app-build
 *.bin
 tomita/out
-
+tomita-linux64
