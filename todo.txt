@@ -1,3 +1,4 @@
+- fetch pravda ru articles
 - store and handle filter hierarcy
 - use Route params normally
 - handle ua apostrof

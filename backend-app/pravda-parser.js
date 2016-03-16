@@ -68,7 +68,7 @@ class PravdaParser {
         ('0' + (currentDate.getMonth() + 1)).slice(-2) +
         currentDate.getFullYear();
 
-      var url = `http://www.pravda.com.ua/archives/date_${date}/`;
+      var url = `http://www.pravda.com.ua/rus/archives/date_${date}/`;
       console.log(url);
 
       request({

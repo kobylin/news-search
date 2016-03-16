@@ -1,8 +1,8 @@
 import _ from 'underscore';
-import NewsFilters from './NewsFilters';
-import DistributionChart from './DistributionChart';
-import WordCloud from './WordCloud';
-import ArticleList from './ArticleList';
+import DistributionChart from './charts/DistributionChart';
+import WordCloud from './charts/WordCloud';
+import ArticlesFilter from './article/ArticleFilters';
+import ArticleList from './article/ArticleList';
 
 export default React.createClass({
 	
@@ -73,8 +73,8 @@ export default React.createClass({
 		}
 
 		return(
-			<div className="NewsSearch">
-				<NewsFilters onFilterChanged={this.handleFilterChanged}/>
+			<div className="VisualizationPanel">
+				<ArticlesFilter onFilterChanged={this.handleFilterChanged}/>
 				{enabledComponents}
 				<h1>{this.state.filter.q}</h1>
 				<ArticleList filter={this.state.filter} url={url}/>

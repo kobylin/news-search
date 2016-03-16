@@ -5,6 +5,10 @@ import _ from 'underscore';
 class WordCloudD3 {
 	getTemplate() {
 		return `
+			<svg class="word-cloud">
+				<g class="words-container">
+				</g>
+			</svg>
 		`;
 	}
 
@@ -23,7 +27,7 @@ class WordCloudD3 {
 			return w.count;
 		});
 
-		var sizeF = d3.scale.linear().domain(domain).range([2, 200]);
+		var sizeF = d3.scale.linear().domain(domain).range([10, 80]);
 
 		var normalizedData = _.map(wordsData, (w) => {
 			return {
@@ -33,14 +37,15 @@ class WordCloudD3 {
 			};
 		});
 
-		var scale
-
 		var layout = d3Cloud()
-			.size([500, 500])
+			.size([self.width, self.height])
 			.words(normalizedData)
 			.padding(5)
+			// .rotate(function() {
+			// 	return~~ (Math.random() * 2) * 90;
+			// })
 			.rotate(function() {
-				return~~ (Math.random() * 2) * 90;
+				return 0
 			})
 			.font("Impact")
 			.fontSize(function(d) {
@@ -51,11 +56,15 @@ class WordCloudD3 {
 		layout.start();
 
 		function draw(words) {
-			d3.select(self.element)
-				.append("svg")
-				.attr("width", layout.size()[0])
+			var svg = d3.select(self.element)
+				.html(self.getTemplate())
+				.select('svg');
+			
+			var tooltip = svg.select('.word-tooltip');
+
+			svg.attr("width", layout.size()[0])
 				.attr("height", layout.size()[1])
-				.append("g")
+				.select(".words-container")
 				.attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
 				.selectAll("text")
 				.data(words)
@@ -76,10 +85,15 @@ class WordCloudD3 {
 				})
 				.on('click', (d) => {
 					console.log(d.origin);
-					if(self.onWordClick) {
+					if (self.onWordClick) {
 						self.onWordClick(d.origin);
 					}
-				});
+				})
+				// .on('mouseover', (d) => {
+				// 	var transformation = d3.select(this).attr('transform');
+				// 	debugger;
+				// 	tooltip.attr('transform', transformation);
+				// });
 		}
 	}
 }

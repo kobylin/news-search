@@ -37,7 +37,7 @@ export default React.createClass({
 	render() {
 
 		return (
-			<div className="NewsFilters">
+			<div className="ArticlesFilter">
 				<input type="date" placeholder="From" onChange={this.handleFrom}/>
 				<input type="date" placeholder="To" onChange={this.handleTo}/>
 				<input type="text" placeholder="Search..." onChange={this.handleQ}/>

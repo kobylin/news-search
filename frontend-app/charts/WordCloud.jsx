@@ -1,4 +1,4 @@
-import WordCloudD3 from './charts/WordCloudD3';
+import WordCloudD3 from './WordCloudD3';
 
 import ReactDOM from 'react-dom';
 
@@ -31,7 +31,7 @@ default React.createClass({
 			var el = ReactDOM.findDOMNode(this)
 
 			this.chart = new WordCloudD3(el, {
-				width: 800,
+				width: 1200,
 				height: 600,
 				onWordClick: this.props.onWordClick
 			});
