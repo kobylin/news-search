@@ -1,29 +1,16 @@
-// import DistributionChartD3 from './charts/DistributionChartD3';
 import DistributionChartManySourcesD3 from './DistributionChartManySourcesD3';
-
+import _ from 'underscore';
 import ReactDOM from 'react-dom';
 
 export
 default React.createClass({
-		// getInitialState() {
-		// 	return {
-		// 		filter: {}
-		// 	}
-		// },
 
-		componentWillReceiveProps(props) {
-			console.log('DistributionChart.componentWillReceiveProps', props);
-			var self = this;
-			this.searchDistribution(props.filter).then((result) => {
-				var el = ReactDOM.findDOMNode(self);
-				$(el).empty();
-				// debugger;
-				this.chart = new DistributionChartManySourcesD3(el, {
-					width: 800,
-					height: 600
-				});
-				self.chart.initChart(result);
-			});
+		getDefaultProps() {
+			return {
+				filterDefaults: {
+					groupBySource: 1
+				}
+			}
 		},
 
 		searchDistribution(filter) {
@@ -41,8 +28,27 @@ default React.createClass({
 				height: 600
 			});
 
-			this.searchDistribution(this.props.filter).then((result) => {
+			var filter = _.extend({}, this.props.filterDefaults, this.props.filter)
+
+			this.searchDistribution(filter).then((result) => {
 				this.chart.initChart(result);
+			});
+		},
+
+		componentWillReceiveProps(nextProps) {
+			console.log('DistributionChart.componentWillReceiveProps', nextProps);
+			var self = this;
+			var filter = _.extend({}, this.props.filterDefaults, nextProps.filter)
+
+			this.searchDistribution(filter).then((result) => {
+				var el = ReactDOM.findDOMNode(self);
+				$(el).empty();
+				// debugger;
+				this.chart = new DistributionChartManySourcesD3(el, {
+					width: 800,
+					height: 600
+				});
+				self.chart.initChart(result);
 			});
 		},
 

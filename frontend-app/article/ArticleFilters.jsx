@@ -1,6 +1,7 @@
 import _ from 'underscore';
 
-export default React.createClass({
+export
+default React.createClass({
 
 	getDefaultProps() {
 		return {
@@ -8,7 +9,7 @@ export default React.createClass({
 		};
 	},
 
-	getInitialState () {
+	getInitialState() {
 		return {
 			q: '',
 			from: '',
@@ -16,14 +17,24 @@ export default React.createClass({
 		}
 	},
 
-	componentDidMount () {
-		this.onFilterChangedDebounced = _.debounce(this.props.onFilterChanged, 500);
+	componentDidMount() {
+
 	},
 
+	qTimeout: null,
+
 	handleQ(event) {
-		this.setState({
-			q: event.target.value
-		});
+		if(this.qTimeout) {
+			clearTimeout(this.qTimeout);
+		}
+
+		const value = event.target.value;
+		this.qTimeout = setTimeout(() => {
+			this.setState({
+				q: value
+			});
+			this.qTimeout = null;
+		}, 500);
 	},
 
 	handleFrom(event) {
@@ -38,9 +49,9 @@ export default React.createClass({
 		});
 	},
 
-	shouldComponentUpdate (nextProps,nextState) {
+	shouldComponentUpdate(nextProps, nextState) {
 		// console.log('shouldComponentUpdate:', nextProps, nextState);
-		if(_.isEqual(this.state, nextState) && _.isEqual(this.props, nextProps)) {
+		if (_.isEqual(this.state, nextState) && _.isEqual(this.props, nextProps)) {
 			return false;
 		}
 		return true;
@@ -54,10 +65,10 @@ export default React.createClass({
 	render() {
 		// console.log('ArticleFilters: render()');
 		return (
-			<div className="ArticlesFilter">
-				<input type="date" placeholder="From" onChange={this.handleFrom}/>
-				<input type="date" placeholder="To" onChange={this.handleTo}/>
-				<input type="text" placeholder="Search..." onChange={this.handleQ}/>
+			<div className = "ArticlesFilter">
+				<input type = "date" placeholder = "From" onChange = {this.handleFrom}/>
+				<input type="date" placeholder="To" onChange={this.handleTo} />
+				<input type = "text" placeholder = "Search..." onChange = {this.handleQ}/>
 			</div>
 		)
 	}

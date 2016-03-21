@@ -3,12 +3,15 @@ import path from 'path';
 import _ from 'underscore';
 import * as models from '../models';
 
-export default function articles_distribution (req, res) {
-  const _from = req.query.from;
-  const to = req.query.to;
+export
+default
+
+function articles_distribution(req, res) {
   const sourceName = req.query.sourceName;
   const groupBySource = req.query.groupBySource === '1';
   const q = req.query.q;
+  const _from = Date.parse(req.query.from);
+  const to = Date.parse(req.query.to);
 
   var group = {
     _id: {
@@ -54,10 +57,21 @@ export default function articles_distribution (req, res) {
 
   var match = {};
 
+  if (_from || to) {
+    match.created = {};
+  }
   if (_from) {
-    match.created = {
-      $gt: new Date(parseInt(_from))
-    };
+    let fromDate = new Date(_from);
+    fromDate.setHours(0);
+    fromDate.setMinutes(0);
+    match.created.$gt = fromDate;
+  }
+  if (to) {
+    let toDate = new Date(to);
+    toDate.setHours(0);
+    toDate.setMinutes(0);
+    toDate.setDate(toDate.getDate() + 1);
+    match.created.$lt = toDate;
   }
 
   if (sourceName) {

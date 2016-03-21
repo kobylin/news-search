@@ -3,16 +3,14 @@ import ReactDOM from 'react-dom';
 import {Router, Route, hashHistory, Redirect} from 'react-router';
 
 import VisualizationPanelWc from './VisualizationPanelWc';
+import VisualizationPanelDc from './VisualizationPanelDc';
 
     	// <Redirect from="/" to="/wc" />
-//
-// <Route path="/wc" component={VisualizationPanel} enabled={{wordCloud:true}}/>
-// <Route path="/dc" component={VisualizationPanel} enabled={{distributionChart:true}}/>
-
 
 ReactDOM.render((
     <Router history={hashHistory}>
-    	<Route path="/" component={VisualizationPanelWc}/>
+    	<Route path="/wc" component={VisualizationPanelWc}/>
+    	<Route path="/" component={VisualizationPanelDc}/>
 		</Router>
 		),document.getElementById('content')
 );
