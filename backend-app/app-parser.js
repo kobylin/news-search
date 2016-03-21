@@ -35,6 +35,6 @@ var parser = new PravdaParser({
 	goNextPageTimeout: 500
 });
 
-parser.fetchAndSaveMonths(2016, PravdaMonthNames, function(articles) {
+parser.fetchAndSaveMonths(2014, PravdaMonthNames, function(articles) {
 	console.log(articles);
 });

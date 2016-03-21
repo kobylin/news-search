@@ -2,24 +2,37 @@ import _ from 'underscore';
 import Article from './Article';
 
 export default React.createClass({
+
+	getDefaultProps () {
+		return {
+			url: '',
+			filter: {},
+			staticFilter: {
+				// nostopwords: 1,
+				// wholeWord: 1
+			},
+		}
+	},
+
 	getInitialState() {
 		return {
 			articles: [],
 			meta: {
 
-			},
-			url: ''
+			}
 		}
 	},
 
 	componentWillReceiveProps (nextProps) {
+		// console.log('ArticleList:componentWillReceiveProps', nextProps);
+		var filter = _.extend({}, this.props.staticFilter, nextProps.filter);
+
 		this.searchArticles(nextProps.url, nextProps.filter).then((result) => {
 			this.setState({
 				articles: result.items,
 				meta: result.meta
 			});
 		});
-
 	},
 
 	searchArticles(url, filter) {
@@ -61,9 +74,9 @@ export default React.createClass({
 		}
 	},
 
-	componentWillUpdate (nextProps, nextState) {
-		console.log('nextProps', nextProps, 'nextState', nextState);
-	},
+	// componentWillUpdate (nextProps, nextState) {
+	// 	console.log('ArticleList: nextProps', nextProps, 'nextState', nextState);
+	// },
 	
 	render() {
 		var articles = _.map(this.state.articles, (art) => {

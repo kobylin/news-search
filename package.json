@@ -2,7 +2,7 @@
   "scripts": {
     "start": "npm run wp | npm run babelb | npm run be",
     "babelb": "babel backend-app --out-dir backend-app-build -w",
-    "be": "nodemon backend-app-build/app-web.js",
+    "be": "nodemon -w backend-app-build backend-app-build/app-web.js",
     "wp": "webpack --watch --progress",
     "webpack": "webpack-dev-server --progress --colors --port 8090"
   },

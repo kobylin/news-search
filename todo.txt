@@ -1,5 +1,8 @@
-- fetch pravda ru articles
-- store and handle filter hierarcy
+- make viz panel for distribution chart
+- make filter hierarcy
+	- each component can have special configurable filter
+	- component inherits filters from parent
+- put svg rendering into correct methods
 - use Route params normally
 - handle ua apostrof
 - sometimes word cloud not shows some words

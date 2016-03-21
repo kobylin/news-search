@@ -1,6 +1,13 @@
 import _ from 'underscore';
 
 export default React.createClass({
+
+	getDefaultProps() {
+		return {
+			onFilterChanged: () => {}
+		};
+	},
+
 	getInitialState () {
 		return {
 			q: '',
@@ -9,33 +16,43 @@ export default React.createClass({
 		}
 	},
 
-	componentWillMount () {
-		this.onFilterChangedDeb = _.debounce(this.props.onFilterChanged, 500);
+	componentDidMount () {
+		this.onFilterChangedDebounced = _.debounce(this.props.onFilterChanged, 500);
 	},
 
 	handleQ(event) {
-		this.setState(_.extend(this.state, {
+		this.setState({
 			q: event.target.value
-		}));
-		this.onFilterChangedDeb(this.state);
+		});
 	},
 
 	handleFrom(event) {
-		this.setState(_.extend(this.state, {
+		this.setState({
 			from: event.target.value
-		}));
-		this.props.onFilterChanged(this.state);
+		});
 	},
 
 	handleTo(event) {
-		this.setState(_.extend(this.state, {
+		this.setState({
 			to: event.target.value
-		}));
+		});
+	},
+
+	shouldComponentUpdate (nextProps,nextState) {
+		// console.log('shouldComponentUpdate:', nextProps, nextState);
+		if(_.isEqual(this.state, nextState) && _.isEqual(this.props, nextProps)) {
+			return false;
+		}
+		return true;
+	},
+
+	componentDidUpdate() {
+		console.log('ArticlesFilter:componentDidUpdate', this.state);
 		this.props.onFilterChanged(this.state);
 	},
 
 	render() {
-
+		// console.log('ArticleFilters: render()');
 		return (
 			<div className="ArticlesFilter">
 				<input type="date" placeholder="From" onChange={this.handleFrom}/>

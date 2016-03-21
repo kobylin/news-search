@@ -6,21 +6,18 @@ import fs from 'fs';
 import ruStopWords from '../data/russian';
 import uaStopWords from '../data/ukranian';
 
-console.log()
-
-// const ruStopWords = fs.readFileSync(__dirname + '/../data/russian').toString().split('\n');
-// const uaStopWords = fs.readFileSync(__dirname + '/../data/ukranian').toString().split('\n');
 const allStopWords = ruStopWords.concat(uaStopWords);
 
 export
 
 function words_distribution(req, res) {
+  const q = req.query.q;
   const _from = req.query.from;
   const to = req.query.to;
   const sourceName = req.query.sourceName;
   const groupBySource = req.query.groupBySource === '1';
-  const q = req.query.q;
   const nostopwords = req.query.nostopwords === '1';
+  const wholeWord = req.query.wholeWord === '1';
 
   var group = {
     _id: {
@@ -65,14 +62,18 @@ function words_distribution(req, res) {
     match.sourceName = sourceName;
   }
 
-  // if (q) {
-  //   match.word = q;
-  // }
-
   if (!_.isEmpty(match)) {
     query.unshift({
       $match: match
     });
+  }
+
+  if (q) {
+    query.unshift({
+      $match: {
+        word: wholeWord ? q : new RegExp(q, 'i')
+      }
+    })
   }
 
   if (nostopwords) {
@@ -85,8 +86,8 @@ function words_distribution(req, res) {
     });
   }
 
-  console.log('-------------query----------------', q);
-  console.log(JSON.stringify(query, null, 2));
+  // console.log('-------------query----------------', q);
+  // console.log(JSON.stringify(query, null, 2));
 
   models.Word.aggregate(query)
     .exec((err, result) => {
@@ -143,30 +144,49 @@ export
 
 function words_distribution_articles(req, res) {
   const q = req.query.q;
-  if (!q) {
-    return res.send([]);
-  }
-
   const offset = parseInt(req.query.offset) || 0;
   const size = parseInt(req.query.size) || 20;
   const orderBy = req.query.orderBy || 'created';
   const orderDir = req.query.orderDir;
+  const wholeWord = req.query.wholeWord === '1';
+
+
+  if (!q) {
+    return res.json({
+      meta: {
+        q: q,
+        offset: offset,
+        size: size,
+        orderBy: orderBy,
+        orderDir: orderDir,
+        count: 0
+      },
+      items: []
+    });
+  }
 
   let sortQuery = {};
   sortQuery[orderBy] = 1;
 
+  let findQuery = {};
+  if (q) {
+    findQuery.word = wholeWord ? q : new RegExp(q, 'i');
+  }
+
   async.parallel({
     count: (cb) => {
-      models.Word.count({
-        word: q
-      }).exec(cb);
+      models.Word
+        .count(findQuery)
+        .exec(cb);
     },
     items: (cb) => {
-      models.Word.find({
-        word: q
-      }).sort(sortQuery).skip(offset).limit(size).exec(cb);
+      models.Word
+        .find(findQuery)
+        .sort(sortQuery).skip(offset).limit(size)
+        .exec(cb);
     }
   }, (err, result) => {
+    console.log(result, result.items.map(it => it.articleId));
 
     models.Article.find({
       _id: {
@@ -174,7 +194,7 @@ function words_distribution_articles(req, res) {
       }
     }).exec((err, articles) => {
       // return res.json(articles.concat(result.items));
-      if(err) {
+      if (err) {
         return res.send(err);
       }
       // var newItems = [];

@@ -2,15 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, hashHistory, Redirect} from 'react-router';
 
-import VisualizationPanel from './VisualizationPanel';
+import VisualizationPanelWc from './VisualizationPanelWc';
 
-require("!style!css!less!./VisualizationPanel.less");
+    	// <Redirect from="/" to="/wc" />
+//
+// <Route path="/wc" component={VisualizationPanel} enabled={{wordCloud:true}}/>
+// <Route path="/dc" component={VisualizationPanel} enabled={{distributionChart:true}}/>
+
 
 ReactDOM.render((
     <Router history={hashHistory}>
-    	<Redirect from="/" to="/wc" />
-    	<Route path="/wc" component={VisualizationPanel} enabled={{wordCloud:true}}/>
-    	<Route path="/dc" component={VisualizationPanel} enabled={{distributionChart:true}}/>
+    	<Route path="/" component={VisualizationPanelWc}/>
 		</Router>
 		),document.getElementById('content')
 );

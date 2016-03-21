@@ -9,9 +9,6 @@ import articlesRoute from './routes/articles';
 import articlesDistributionRoute from './routes/articles_distribution';
 import * as wordsDistributionRoute from './routes/words_distribution';
 
-
-console.log(articlesRoute);
-
 models.connect();
 
 const app = express();

@@ -4,7 +4,7 @@ import _ from 'underscore';
 import * as models from '../models';
 
 export default function articles (req, res) {
-  const q = req.query.q || 0;
+  const q = req.query.q || '';
   const offset = parseInt(req.query.offset) || 0;
   const size = parseInt(req.query.size) || 20;
   const orderBy = req.query.orderBy || 'created';
