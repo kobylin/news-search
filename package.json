@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "npm run wp | npm run babelb | npm run be",
+    "start": "./tmux_run.sh",
     "babelb": "babel backend-app --out-dir backend-app-build -w",
     "be": "nodemon -w backend-app-build backend-app-build/app-web.js",
     "wp": "webpack --watch --progress",

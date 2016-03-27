@@ -1,4 +1,5 @@
-- make viz panel for distribution chart
+- make range search for word distribution
+	- implement common solution for range search
 - make filter hierarcy
 	- each component can have special configurable filter
 	- component inherits filters from parent
