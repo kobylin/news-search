@@ -1,12 +1,13 @@
 # README #
 
-To run application
+### Run application:
 
 `npm install`
 
 `npm run start`
 
-Folders description:
+
+### Folders description:
 
 **/backend-app**, **/frontend-app** ES6 version of code
 
