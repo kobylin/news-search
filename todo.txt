@@ -1,4 +1,11 @@
+- describe idea on blog
+
+- work on UI
+	- Design interaction
+	- http://startbootstrap.com/template-overviews/sb-admin-2/
+
 - make range search for word distribution
+	- find range selection plugin
 	- implement common solution for range search
 - make filter hierarcy
 	- each component can have special configurable filter
