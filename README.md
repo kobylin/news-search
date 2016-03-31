@@ -12,4 +12,4 @@ Folders description:
 
 **/backend-app-build**, **/frontend-app-build** ES5 version of code
 
-**tomita** - Yandex tomita parser
+**/tomita** - Yandex tomita parser
