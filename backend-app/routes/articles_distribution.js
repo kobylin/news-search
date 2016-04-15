@@ -10,8 +10,8 @@ function articles_distribution(req, res) {
   const sourceName = req.query.sourceName;
   const groupBySource = req.query.groupBySource === '1';
   const q = req.query.q;
-  const _from = Date.parse(req.query.from);
-  const to = Date.parse(req.query.to);
+  const _from = parseInt(req.query.from);
+  const to = parseInt(req.query.to);
 
   var group = {
     _id: {
@@ -92,8 +92,7 @@ function articles_distribution(req, res) {
     });
   }
 
-
-  console.log('-----------------------------', q);
+  console.log('/articles_distribution -----------------------------', q);
   console.log(JSON.stringify(query, null, 2));
 
   models.Article.aggregate(query)

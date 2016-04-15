@@ -1,22 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Basic Property Grid</title>
-    <!-- include react -->
-    <script src="./react/dist/react-with-addons.js"></script>
-    <script src="./react-dom/dist/react-dom.js"></script>
-    <script src="./jquery/dist/jquery.min.js"></script>
-    <meta charset="UTF-8">
+	<title>News Search</title>
+	<!-- include react -->
+	<script src="./react/dist/react-with-addons.js"></script>
+	<script src="./react-dom/dist/react-dom.js"></script>
+	<script src="./jquery/dist/jquery.min.js"></script>
+	<script src="./bootstrap-slider/dist/bootstrap-slider.js"></script>
+	<script src="./bootstrap/dist/js/bootstrap.js"></script>
+	<link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/dist/css/bootstrap-theme.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap-slider/dist/css/bootstrap-slider.css">
+	<meta charset="UTF-8">
 </head>
 <body>
-<div id="content">
-    <!-- this is where the root react component will get rendered -->
-</div>
-<!-- include the webpack-dev-server script so our scripts get reloaded when we make a change -->
-<!-- we'll run the webpack dev server on port 8090, so make sure it is correct -->
-<!-- <script src="http://localhost:8090/webpack-dev-server.js"></script> -->
-<!-- include the bundle that contains all our scripts, produced by webpack -->
-<!-- the bundle is served by the webpack-dev-server, so serve it also from localhost:8090 -->
-<script type="text/javascript" src="./bundle.js"></script>
+	<div id="wrapper">
+		<div class="left-bar">
+			<h3>Tools</h3>
+			<ul class="nav nav-pills nav-stacked">
+				<li role="presentation" class="active">
+					<a href="">All search</a>
+				</li>
+				<li role="presentation">
+					<a href="">Word Cloud</a> 
+				</li>
+			</ul>			
+		</div>
+		<div class="page">
+			<h1 class="page-header">All search</h1>
+			<div class="panel panel-default">
+				<!-- <div class="panel-heading">Panel heading without title</div> -->
+				<div class="panel-body container-fluid">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="content">
+		<!-- this is where the root react component will get rendered -->
+	</div>
+	<!-- include the webpack-dev-server script so our scripts get reloaded when we make a change -->
+	<!-- we'll run the webpack dev server on port 8090, so make sure it is correct -->
+	<!-- <script src="http://localhost:8090/webpack-dev-server.js"></script> -->
+	<!-- include the bundle that contains all our scripts, produced by webpack -->
+	<!-- the bundle is served by the webpack-dev-server, so serve it also from localhost:8090 -->
+	<script type="text/javascript" src="./bundle.js"></script>
 </body>
 </html>

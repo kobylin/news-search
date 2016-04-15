@@ -35,13 +35,12 @@ export default React.createClass({
 
 	render() {
 		window.FF = this;
-
+				// <ArticleList filter={this.state.articleFilters} url="/articles"/>
 		return (
 			<div className="VisualizationPanel">
-				<ArticleFilters onFilterChanged={this.handleFilterChanged}/>
+				<ArticleFilters from={+new Date(2015, 0, 1)} to={+new Date(2016, 0, 1)} sources={['Korr', 'Pravda']} onFilterChanged={this.handleFilterChanged}/>
 				<DistributionChart onBarClick={this.handleBarClick} filter={this.state.articleFilters}/>
 				<h1>{this.state.articleFilters.q}</h1>
-				<ArticleList filter={this.state.articleFilters} url="/articles"/>
 			</div>
 		)
 	}

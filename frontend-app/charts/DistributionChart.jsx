@@ -21,7 +21,8 @@ default React.createClass({
 		},
 
 		componentDidMount: function() {
-			var el = ReactDOM.findDOMNode(this)
+			console.log('DistributionChart:componentDidMount');
+			var el = ReactDOM.findDOMNode(this);
 
 			this.chart = new DistributionChartManySourcesD3(el, {
 				width: 800,
@@ -55,6 +56,6 @@ default React.createClass({
 		render() {
 			return ( 
 				<div className = "DistributionChart"></div>
-		)
+			)
 	}
 });

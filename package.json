@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "async": "^1.5.2",
+    "bootstrap": "^3.3.6",
+    "bootstrap-slider": "^7.0.0",
     "cheerio": "^0.20.0",
     "cookie-parser": "^1.4.1",
     "d3": "^3.5.16",
