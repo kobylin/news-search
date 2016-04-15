@@ -66,7 +66,7 @@ class DistributionChartManySourcesD3 {
 
 			if (!normalizedData[dateKey]) {
 				normalizedData[dateKey] = {
-					date: +new Date(d.date.year, d.date.month - 1),
+					date: +new Date(d.date.year, d.date.month),
 					sources: []
 				};
 			}
@@ -118,8 +118,8 @@ class DistributionChartManySourcesD3 {
 		var timeRange = d3.extent(normalizedData, function(d) {
 			return d.date;
 		});
-		var mothsInRange = (timeRange[1] - timeRange[0]) / monthInMsec;
-		var yearsInRange = Math.ceil(mothsInRange / 12) + 1;
+		var mothsInRange = Math.ceil((timeRange[1] - timeRange[0]) / monthInMsec);
+		var yearsInRange = Math.ceil(mothsInRange / 12);
 		var barGroupWidth = Math.round(width / (mothsInRange + 4 /*two month that we added at the bottom*/ )) - 1;
 		var axisTimeRange = [+timeRange[0] - monthInMsec, +timeRange[1] + monthInMsec];
 		var x = d3.time.scale()
@@ -139,7 +139,7 @@ class DistributionChartManySourcesD3 {
 		var xAxisMonth = d3.svg.axis()
 			.scale(x)
 			.orient("bottom")
-			.ticks(15)
+			.ticks(mothsInRange)
 			.tickFormat(d3.time.format("%m"));
 
 		var xAxisYear = d3.svg.axis()

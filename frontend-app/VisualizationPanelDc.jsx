@@ -11,7 +11,8 @@ export default React.createClass({
 	getDefaultProps() {
 		return {
 			filterDefaults: {
-				from: new Date(2014, 0).toString(),
+				from: +new Date(2016, 0, 1),
+				to: +new Date(2017, 0, 1)
 			}
 		}
 	},
@@ -38,7 +39,7 @@ export default React.createClass({
 				// <ArticleList filter={this.state.articleFilters} url="/articles"/>
 		return (
 			<div className="VisualizationPanel">
-				<ArticleFilters from={+new Date(2015, 0, 1)} to={+new Date(2016, 0, 1)} sources={['Korr', 'Pravda']} onFilterChanged={this.handleFilterChanged}/>
+				<ArticleFilters from={this.state.articleFilters.from} to={this.state.articleFilters.to} sources={['Korr', 'Pravda']} onFilterChanged={this.handleFilterChanged}/>
 				<DistributionChart onBarClick={this.handleBarClick} filter={this.state.articleFilters}/>
 				<h1>{this.state.articleFilters.q}</h1>
 			</div>

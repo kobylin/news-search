@@ -75,7 +75,7 @@ class PravdaParser {
         url: url,
         encoding: null,
         headers: {
-          Cookie: 'b=b; b=b; _ym_uid=1457515766598595745; _ym_isad=1; b=b; PRAVDA_COOKIE=75e84cc72acec051fcaac8720dd3b3af; _ga=GA1.3.1874425770.1457515765; _gat=1',
+          Cookie: 'b=b; b=b; _ym_uid=1457515766598595745; _ym_isad=1; b=b; PRAVDA_COOKIE=8d56f14bc430f060d6083889958fa382; _ga=GA1.3.1874425770.1457515765; _gat=1',
         }
       }, (err, resp, body) => {
         body = new Buffer(body, 'binary');
