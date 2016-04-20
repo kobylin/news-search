@@ -5,7 +5,7 @@ import async from 'async';
 import path from 'path';
 import _ from 'underscore';
 
-import articlesRoute from './routes/articles';
+import * as articles from './routes/articles';
 import articlesDistributionRoute from './routes/articles_distribution';
 import * as wordsDistributionRoute from './routes/words_distribution';
 
@@ -20,7 +20,8 @@ app.get('/', function(req, res) {
   res.sendFile(path.resolve(__dirname + '/../index.html'));
 });
 
-app.get('/articles', articlesRoute);
+app.get('/articles', articles.articles);
+app.get('/articles/sources', articles.articles_sources);
 
 app.get('/articles_distribution', articlesDistributionRoute);
 app.get('/words_distribution', wordsDistributionRoute.words_distribution);

@@ -19,7 +19,8 @@ export default React.createClass({
 
 	getInitialState() {
 		return {
-			articleFilters: {}
+			articleFilters: {},
+			sources: []
 		};
 	},
 
@@ -30,18 +31,27 @@ export default React.createClass({
 		});
 	},
 
+	componentWillMount() {
+		$.ajax({
+			url: '/articles/sources',
+		}).then((result) => {
+			this.setState({
+				sources: result
+			})
+		})
+	},
+
 	handleBarClick(data) {
 		
 	},
 
 	render() {
-		window.FF = this;
 		return (
 			<div className="VisualizationPanel">
 				<ArticleFilters 
 					from={this.props.filterDefaults.from} 
 					to={this.props.filterDefaults.to} 
-					sources={['Korr', 'Pravda']} 
+					sources={this.state.sources} 
 					onFilterChanged={this.handleFilterChanged}/>
 				<DistributionChart onBarClick={this.handleBarClick} filter={this.state.articleFilters}/>
 				<ArticleList filter={this.state.articleFilters} url="/articles"/>

@@ -17,9 +17,13 @@ default React.createClass({
 			q: '',
 			from: this.props.from,
 			to: this.props.to,
-			sources: []
+			sources: this.props.sources
 		}
 	},
+
+	// componentWillReceiveProps(nextProps) {
+	// 	this.setState(nextProps);
+	// },
 
 	componentDidMount() {
 		var el = ReactDOM.findDOMNode(this);

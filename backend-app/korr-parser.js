@@ -53,6 +53,13 @@ class KorrParser {
             console.log(url);
 
             request(url, function (err, resp, body) {
+                if(err || !body) {
+                    console.log('ERROR:', err);
+                    pageN++;
+                    doRequest();
+                    return;
+                }
+
                 var $dom = cheerio.load(body, {
                     decodeEntities: false
                 });

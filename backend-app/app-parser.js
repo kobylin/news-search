@@ -25,16 +25,16 @@ models.connect();
 //    });
 //});
 
-// var korr = new KorrParser();
-// korr.fetchAndSaveMonths(2014, KorrMonthNames.slice(3), () => {
-//     models.closeConnection();
+var korr = new KorrParser();
+korr.fetchAndSaveMonths(2016, KorrMonthNames, () => {
+    models.closeConnection();
+});
+
+
+// var parser = new PravdaParser({
+// 	goNextPageTimeout: 500
 // });
 
-
-var parser = new PravdaParser({
-	goNextPageTimeout: 500
-});
-
-parser.fetchAndSaveMonths(2016, PravdaMonthNames, function(articles) {
-	console.log(articles);
-});
+// parser.fetchAndSaveMonths(2016, PravdaMonthNames, function(articles) {
+// 	console.log(articles);
+// });

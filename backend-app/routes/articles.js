@@ -3,10 +3,7 @@ import path from 'path';
 import _ from 'underscore';
 import * as models from '../models';
 
-export
-default
-
-function articles(req, res) {
+export function articles(req, res) {
   const q = req.query.q || '';
   const offset = parseInt(req.query.offset) || 0;
   const size = parseInt(req.query.size) || 20;
@@ -81,3 +78,15 @@ function articles(req, res) {
     });
   });
 };
+
+export function articles_sources(req, res) {
+  models.Article
+    .aggregate({$group: {_id: '$sourceName'}})
+    .exec(function(err, result) {
+      if(err) {
+        return res.send(err);
+      }
+      var formatedResult = _.map(result, d => d._id);
+      res.json(formatedResult);
+    });
+}

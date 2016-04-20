@@ -67,7 +67,7 @@ class DistributionChartManySourcesD3 {
 
 			if (!normalizedData[dateKey]) {
 				normalizedData[dateKey] = {
-					date: +new Date(d.date.year, d.date.month),
+					date: +new Date(d.date.year, d.date.month - 1),
 					sources: []
 				};
 			}
@@ -80,15 +80,9 @@ class DistributionChartManySourcesD3 {
 			}
 		});
 
-		// var colorRange = d3.scale.category10().range();
-		// var darkerColorRange = colorRange.map(function(c) {return d3.rgb(c).darker(2).toString()} );
-
-		// var sourceColorScale = d3.scale.ordinal()
-		// 	.domain(sourceNames)
-		// 	.range();
-
-		// var darkerColorScale = 
-
+		console.log('normalizedData: ', normalizedData);
+		normalizedData = _.values(normalizedData);
+		normalizedData = _.sortBy(normalizedData, 'date');
 
 		var legendItemBinded = legend.selectAll('.legend-item')
 			.data(sourceNames);
@@ -112,18 +106,14 @@ class DistributionChartManySourcesD3 {
 				return d;
 			});
 
-		normalizedData = _.values(normalizedData);
-		normalizedData = _.sortBy(normalizedData, 'date');
-
-		console.log(normalizedData);
-
 		var timeRange = d3.extent(normalizedData, function(d) {
 			return d.date;
 		});
 		var mothsInRange = Math.ceil((timeRange[1] - timeRange[0]) / monthInMsec);
+		mothsInRange = mothsInRange < 2 ? 2 : mothsInRange;
 		var yearsInRange = Math.ceil(mothsInRange / 12);
-		var barGroupWidth = Math.round(width / (mothsInRange + 4 /*two month that we added at the bottom*/ )) - 1;
-		var axisTimeRange = [+timeRange[0] - monthInMsec, +timeRange[1] + monthInMsec];
+		var barGroupWidth = Math.round(width / (mothsInRange + 0 /*two month that we added at the bottom*/ ));
+		var axisTimeRange = [timeRange[0], timeRange[1] + monthInMsec];
 		var x = d3.time.scale()
 			.domain(axisTimeRange)
 			.range([0, plotWidth]);
@@ -178,7 +168,49 @@ class DistributionChartManySourcesD3 {
 
 		barGroupBinded
 			.attr("transform", function(d, i) {
-				return "translate(" + (x(d.date) - barGroupWidth / 2) + ", 0)";
+				return `translate(${x(d.date)}, 0)`;
+			});
+
+		var barBinded = barGroupBinded
+			.selectAll('.bar')
+			.data((d) => {
+				return d.sources;
+			}, (dd) => {
+				return dd.sourceName;
+			});
+
+		barBinded.enter()
+			.append('rect')
+			.attr('class', 'bar')
+		.attr('class', function(d) {
+			return d3.select(this).attr('class') + ' source' + sourceNames.indexOf(d.sourceName)
+		})
+			.style('stroke', 'black')
+			.attr('text', (d) => {
+				return d.count;
+			});
+
+		var barWidth = barGroupWidth / (sourceNames.length + 1);
+
+		barBinded
+			.attr("y", function(d) {
+				var yy = y(d.count);
+				if(plotHeight - yy < 30) {
+					return plotHeight - 30;
+				} 
+				return yy;
+			})
+			.attr('x', function(d) {
+				return sourceNames.indexOf(d.sourceName) * barWidth;
+			})
+			.attr("width", function(d) {
+				return barWidth;
+			})
+			.attr("height", function(d) {
+				if(plotHeight - y(d.count) < 30) {
+					return 30;
+				}
+				return plotHeight - y(d.count);
 			});
 
 		barGroupBinded
@@ -190,7 +222,7 @@ class DistributionChartManySourcesD3 {
 				});
 				tooltip = tooltip.join('\n');
 
-				var tooltipX = x(d.date) - barGroupWidth + barWidth;
+				var tooltipX = x(d.date);
 				var tooltipY = y(d3.max(d.sources, (s) => {
 					return s.count;
 				}));
@@ -219,42 +251,6 @@ class DistributionChartManySourcesD3 {
 			.on('mouseout', function(d) {
 				barTooltip.style('visibility', 'hidden');
 				d3.select(this).classed('selected', false);
-			});
-
-		var barBinded = barGroupBinded
-			.selectAll('.bar')
-			.data((d) => {
-				return d.sources;
-			}, (dd) => {
-				return dd.sourceName;
-			});
-
-		barBinded.enter()
-			.append('rect')
-			.attr('class', 'bar')
-		// .style('fill-opacity', 0.5)
-		.attr('class', function(d) {
-			return d3.select(this).attr('class') + ' source' + sourceNames.indexOf(d.sourceName)
-		})
-			.style('stroke', 'black')
-			.attr('text', (d) => {
-				return d.count;
-			});
-
-		var barWidth = barGroupWidth / (sourceNames.length + 1);
-
-		barBinded
-			.attr("y", function(d) {
-				return y(d.count)
-			})
-			.attr('x', function(d) {
-				return sourceNames.indexOf(d.sourceName) * barWidth;
-			})
-			.attr("width", function(d) {
-				return barWidth;
-			})
-			.attr("height", function(d) {
-				return plotHeight - y(d.count);
 			});
 	}
 

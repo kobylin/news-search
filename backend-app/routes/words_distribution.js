@@ -8,9 +8,7 @@ import uaStopWords from '../data/ukranian';
 
 const allStopWords = ruStopWords.concat(uaStopWords);
 
-export
-
-function words_distribution(req, res) {
+export function words_distribution(req, res) {
   const q = req.query.q;
   const _from = req.query.from;
   const to = req.query.to;
@@ -140,9 +138,7 @@ function words_distribution(req, res) {
     });
 }
 
-export
-
-function words_distribution_articles(req, res) {
+export function words_distribution_articles(req, res) {
   const q = req.query.q;
   const offset = parseInt(req.query.offset) || 0;
   const size = parseInt(req.query.size) || 20;
