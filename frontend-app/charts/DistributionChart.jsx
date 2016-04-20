@@ -1,4 +1,4 @@
-import DistributionChartManySourcesD3 from './DistributionChartManySourcesD3';
+import DistributionChartD3 from './DistributionChartD3';
 import _ from 'underscore';
 import ReactDOM from 'react-dom';
 
@@ -24,7 +24,7 @@ default React.createClass({
 			console.log('DistributionChart:componentDidMount');
 			var el = ReactDOM.findDOMNode(this);
 
-			this.chart = new DistributionChartManySourcesD3(el, {
+			this.chart = new DistributionChartD3(el, {
 				width: $(el).width(),
 				height: 600
 			});
@@ -45,7 +45,7 @@ default React.createClass({
 				var el = ReactDOM.findDOMNode(self);
 				$(el).empty();
 				// debugger;
-				this.chart = new DistributionChartManySourcesD3(el, {
+				this.chart = new DistributionChartD3(el, {
 					width: $(el).width(),
 					height: 600
 				});
