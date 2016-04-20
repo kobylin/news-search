@@ -1,4 +1,5 @@
 import _ from 'underscore';
+require("!style!css!less!./ArticleFilters.less");
 
 export
 default React.createClass({
@@ -14,8 +15,8 @@ default React.createClass({
 	getInitialState() {
 		return {
 			q: '',
-			from: '',
-			to: '',
+			from: this.props.from,
+			to: this.props.to,
 			sources: []
 		}
 	},
@@ -113,7 +114,7 @@ default React.createClass({
 						 </li>;
 		});
 		return (
-			<div className = "ArticlesFilter container-fluid">
+			<div className = "ArticleFilters container-fluid">
 				<div className="row">
 					<div className="col-xs-4">
 						<div className="input-group">
@@ -124,7 +125,14 @@ default React.createClass({
 						</div>
 					</div>
 					<div className="col-xs-6 date-picker-column">
-						<input type="text" name="date-picker"/>
+						<div className="slider-container">
+							<span className="from-label">{this.formatDate(this.props.from)}</span>
+							<input type="text" name="date-picker"/>
+							<span className="to-label">{this.formatDate(this.props.to)}</span>
+						</div>
+						<div className="slider-value">
+							{this.formatDate(this.state.from)} - {this.formatDate(this.state.to)}
+						</div>
 					</div>
 					<div className="col-xs-2 sources-column">
 						<div className="button-group">

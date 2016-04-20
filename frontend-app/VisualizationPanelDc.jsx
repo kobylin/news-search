@@ -19,7 +19,7 @@ export default React.createClass({
 
 	getInitialState() {
 		return {
-			articleFilters: this.props.filterDefaults
+			articleFilters: {}
 		};
 	},
 
@@ -36,12 +36,15 @@ export default React.createClass({
 
 	render() {
 		window.FF = this;
-				// <ArticleList filter={this.state.articleFilters} url="/articles"/>
 		return (
 			<div className="VisualizationPanel">
-				<ArticleFilters from={this.state.articleFilters.from} to={this.state.articleFilters.to} sources={['Korr', 'Pravda']} onFilterChanged={this.handleFilterChanged}/>
+				<ArticleFilters 
+					from={this.props.filterDefaults.from} 
+					to={this.props.filterDefaults.to} 
+					sources={['Korr', 'Pravda']} 
+					onFilterChanged={this.handleFilterChanged}/>
 				<DistributionChart onBarClick={this.handleBarClick} filter={this.state.articleFilters}/>
-				<h1>{this.state.articleFilters.q}</h1>
+				<ArticleList filter={this.state.articleFilters} url="/articles"/>
 			</div>
 		)
 	}

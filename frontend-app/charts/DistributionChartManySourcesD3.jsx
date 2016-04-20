@@ -27,8 +27,8 @@ class DistributionChartManySourcesD3 {
 
 	initChart(wordsData) {
 		console.log('data', wordsData);
-		var monthInMsec = 60 * 60 * 24 * 30 * 1000;
-		var width = this.width,
+		const monthInMsec = 60 * 60 * 24 * 30 * 1000;
+		const width = this.width,
 			height = this.height,
 			margin = {
 				top: 60,
@@ -38,6 +38,7 @@ class DistributionChartManySourcesD3 {
 			},
 			plotWidth = width - (margin.right + margin.left),
 			plotHeight = height - (margin.top + margin.bottom);
+		const legendRectWidth = 20;
 
 		var rootElement = d3.select(this.element);
 		rootElement.html(this.getTemplate());
@@ -88,6 +89,7 @@ class DistributionChartManySourcesD3 {
 
 		// var darkerColorScale = 
 
+
 		var legendItemBinded = legend.selectAll('.legend-item')
 			.data(sourceNames);
 
@@ -95,17 +97,17 @@ class DistributionChartManySourcesD3 {
 			.append('g')
 			.attr('class', 'legend-item')
 			.attr('transform', (d) => {
-				return `translate(0, ${sourceNames.indexOf(d) * 20})`
+				return `translate(0, ${sourceNames.indexOf(d) * legendRectWidth * 2})`
 			});
 		legendItemNew.append('rect')
-			.attr('width', 10)
-			.attr('height', 10)
+			.attr('width', legendRectWidth)
+			.attr('height', legendRectWidth)
 			.attr('class', (d) => {
 				return 'source' + sourceNames.indexOf(d);
 			});
 		legendItemNew.append('text')
-			.attr('dx', 15)
-			.attr('dy', 10)
+			.attr('dx', legendRectWidth + 5)
+			.attr('dy', legendRectWidth)
 			.text(function(d) {
 				return d;
 			});

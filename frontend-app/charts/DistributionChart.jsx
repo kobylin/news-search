@@ -25,7 +25,7 @@ default React.createClass({
 			var el = ReactDOM.findDOMNode(this);
 
 			this.chart = new DistributionChartManySourcesD3(el, {
-				width: 800,
+				width: $(el).width(),
 				height: 600
 			});
 
@@ -46,7 +46,7 @@ default React.createClass({
 				$(el).empty();
 				// debugger;
 				this.chart = new DistributionChartManySourcesD3(el, {
-					width: 800,
+					width: $(el).width(),
 					height: 600
 				});
 				self.chart.initChart(result);
