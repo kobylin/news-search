@@ -8,14 +8,14 @@ require("!style!css!less!./Main.less");
 // import VisualizationPanelWc from './VisualizationPanelWc';
 import VisualizationPanelDc from './VisualizationPanelDc';
 
-    	// <Redirect from="/" to="/wc" />
+      // <Redirect from="/" to="/wc" />
 
 // ReactDOM.render((
 //     <Router history={hashHistory}>
-//     	<Route path="/wc" component={VisualizationPanelWc}/>
-//     	<Route path="/" component={VisualizationPanelDc}/>
-// 		</Router>
-// 		),document.getElementById('content')
+//      <Route path="/wc" component={VisualizationPanelWc}/>
+//      <Route path="/" component={VisualizationPanelDc}/>
+//    </Router>
+//    ),document.getElementById('content')
 // );
 
 function showFilters(filters) {

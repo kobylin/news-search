@@ -10,9 +10,9 @@ models.connect();
 
 var at = new ArticleTokenizer();
 models.Article.find({
-	created: {
-		$gt: new Date(2016, 0)
-	}
+  created: {
+    $gt: new Date(2016, 0)
+  }
 }).exec((err, items) => {
    at.tokenizeInWordsAndSave(items, (err, result) => {
        console.log('END!: ', err, result);

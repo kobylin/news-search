@@ -1,6 +1,19 @@
+@import '../colors.less';
+
 .Article {
 	.highlighted-text {
 		color: #F37706;
 		font-weight: 700;
+	}
+
+	.source-label {
+		margin: 0 5px;
+
+		&.korrespondent {
+			background-color: @korrespondent;
+		}
+		&.pravda {
+			background-color: @pravda;
+		}
 	}
 }

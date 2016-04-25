@@ -1,3 +1,5 @@
+@import '../colors.less';
+
 .distribution-chart {
     // rect {
     //     fill: #41BB8A;
@@ -23,6 +25,29 @@
         text {
             font-size: 20px;
         }
+        .korrespondent {
+            fill: @korrespondent;
+        }
+        .pravda {
+            fill: @pravda;
+        }
+    }
+
+    .bar {
+        &.korrespondent {
+            fill: @korrespondent;
+        }
+        &.pravda {
+            fill: @pravda;
+        }
+    }
+    .selected .bar {
+        &.korrespondent {
+            fill: @korrespondent-selected;
+        }
+        &.pravda {
+            fill: @pravda-selected;
+        }
     }
 }
 
@@ -35,11 +60,11 @@
 }
 
 .source2 {
-    fill: #2ca02c;
+    
 }
 
 .source3 {
-    fill: #d62728;
+
 }
 
 .selected {
@@ -52,11 +77,11 @@
     }
 
     .source2 {
-        fill: #2ca02c;
+        
     }
 
     .source3 {
-        fill: #d62728;
+        
     }
 }
 

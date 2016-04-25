@@ -1,19 +1,7 @@
-- describe idea on blog
+- Find good examples of charts 
+- Fix sources filtering
+- Too many requests on server
 
-- work on UI
-	- Design interaction
-	- http://startbootstrap.com/template-overviews/sb-admin-2/
-
-- make range search for word distribution
-	- find range selection plugin
-	- implement common solution for range search
-- make filter hierarcy
-	- each component can have special configurable filter
-	- component inherits filters from parent
-- put svg rendering into correct methods
-- use Route params normally
-- handle ua apostrof
-- sometimes word cloud not shows some words
 - make flexible article search
 	- search by word, not text matching
 	- search by date range 

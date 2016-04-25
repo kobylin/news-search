@@ -1,7 +1,7 @@
 export function justText(el) {
-	return el.clone()
-		.children()
-		.remove()
-		.end()
-		.text();
+  return el.clone()
+    .children()
+    .remove()
+    .end()
+    .text();
 }

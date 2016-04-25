@@ -5,50 +5,50 @@ import _ from 'underscore';
 export
 default React.createClass({
 
-		getDefaultProps() {
-			return {
-				staticFilter: {
-					nostopwords: 1,
-					// wholeWord: 1
-				},
-				filter: {
+    getDefaultProps() {
+      return {
+        staticFilter: {
+          nostopwords: 1,
+          // wholeWord: 1
+        },
+        filter: {
 
-				}
-			};
-		},
+        }
+      };
+    },
 
-		searchDistribution(filter = {}) {
-			return $.ajax({
-				url: '/words_distribution',
-				data: filter
-			});
-		},
+    searchDistribution(filter = {}) {
+      return $.ajax({
+        url: '/words_distribution',
+        data: filter
+      });
+    },
 
-		componentDidMount: function() {
-			var el = ReactDOM.findDOMNode(this)
+    componentDidMount: function() {
+      var el = ReactDOM.findDOMNode(this)
 
-			this.chart = new WordCloudD3(el, {
-				width: 1200,
-				height: 600,
-				onWordClick: this.props.onWordClick
-			});
-		},
+      this.chart = new WordCloudD3(el, {
+        width: 1200,
+        height: 600,
+        onWordClick: this.props.onWordClick
+      });
+    },
 
-		componentDidUpdate () {
-			console.log('WordCloud: componentDidUpdate');
+    componentDidUpdate () {
+      console.log('WordCloud: componentDidUpdate');
 
-			var filter = _.extend({}, this.props.staticFilter, this.props.filter);
+      var filter = _.extend({}, this.props.staticFilter, this.props.filter);
 
-			this.searchDistribution(filter)
-				.then((result) => {
-					this.chart.initChart(result);
-				});
-		},
+      this.searchDistribution(filter)
+        .then((result) => {
+          this.chart.initChart(result);
+        });
+    },
 
-		render() {
-			console.log('WordCloud: render')
-			return ( 
-				<div className="WordCloud"></div>
-			)
-	}
+    render() {
+      console.log('WordCloud: render')
+      return ( 
+        <div className="WordCloud"></div>
+      )
+  }
 });
