@@ -32,11 +32,15 @@ default React.createClass({
         height: 600,
         onWordClick: this.props.onWordClick
       });
+      this.loadData();
     },
 
     componentDidUpdate () {
       console.log('WordCloud: componentDidUpdate');
+      this.loadData();
+    },
 
+    loadData () {
       var filter = _.extend({}, this.props.staticFilter, this.props.filter);
 
       this.searchDistribution(filter)

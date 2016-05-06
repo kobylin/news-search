@@ -11,14 +11,16 @@ export default React.createClass({
   getDefaultProps() {
     return {
       filterDefaults: {
-        from: +new Date(2014, 0),
+        from: +new Date(2016, 0, 1),
+        to: +new Date(2017, 0, 1)
       }
     }
   },
 
   getInitialState() {
     return {
-      articleFilters: this.props.filterDefaults
+      articleFilters: {},
+      sources: []
     };
   },
 
@@ -36,8 +38,6 @@ export default React.createClass({
   },
 
   render() {
-    window.FF = this;
-
     // <DistributionChart filter={this.state.filter}/>
     // <WordCloud />
     // 
@@ -56,13 +56,16 @@ export default React.createClass({
     //  url = '/articles';
     // }
         // 
-
+        // <h1>{this.state.articleFilters.q}</h1>
+        // <ArticleList filter={this.state.articleFilters} url="/words_distribution/articles"/>
     return (
       <div className="VisualizationPanel">
-        <ArticleFilters onFilterChanged={this.handleFilterChanged}/>
+        <ArticleFilters 
+          from={this.props.filterDefaults.from} 
+          to={this.props.filterDefaults.to} 
+          sources={this.state.sources} 
+          onFilterChanged={this.handleFilterChanged}/>
         <WordCloud onWordClick={this.handleWordCloudClick} filter={this.state.articleFilters}/>
-        <h1>{this.state.articleFilters.q}</h1>
-        <ArticleList filter={this.state.articleFilters} url="/words_distribution/articles"/>
       </div>
     )
   }

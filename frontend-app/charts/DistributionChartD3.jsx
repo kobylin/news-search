@@ -127,7 +127,6 @@ class DistributionChartManySourcesD3 {
       })])
       .range([plotHeight, 0]);
 
-
     var xAxisMonth = d3.svg.axis()
       .scale(x)
       .orient("bottom")

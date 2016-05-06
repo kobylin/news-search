@@ -55,6 +55,11 @@ export function words_distribution(req, res) {
       $gt: new Date(parseInt(_from))
     };
   }
+  if (to) {
+    match.created = {
+      $lt: new Date(parseInt(to))
+    };
+  }
 
   if (sourceName) {
     match.sourceName = sourceName;
